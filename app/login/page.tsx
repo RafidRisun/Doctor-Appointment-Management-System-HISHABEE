@@ -93,7 +93,6 @@ export default function Login() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
             className="flex border border-gray-500 rounded-lg px-4 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black-500"
           />
           {error.email && (
@@ -107,7 +106,6 @@ export default function Login() {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
             className="flex border border-gray-500 rounded-lg px-4 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black-500"
           />
           {error.password && (

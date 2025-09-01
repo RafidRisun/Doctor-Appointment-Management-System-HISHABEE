@@ -17,6 +17,7 @@ export default function Login() {
     password?: string;
     confirmPassword?: string;
     role?: string;
+    specialization?: string;
   }>({});
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -27,6 +28,7 @@ export default function Login() {
       password?: string;
       confirmPassword?: string;
       role?: string;
+      specialization?: string;
     } = {};
 
     if (!name) {
@@ -53,6 +55,10 @@ export default function Login() {
 
     if (!role) {
       newError.role = "Please select a role";
+    }
+
+    if (role === "DOCTOR" && !specialization) {
+      newError.specialization = "Specialization is required for doctors";
     }
 
     setError(newError);
@@ -132,7 +138,6 @@ export default function Login() {
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            required
             className="flex border border-gray-500 rounded-lg px-4 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black-500"
           />
           {error.name && (
@@ -144,7 +149,6 @@ export default function Login() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
             className="flex border border-gray-500 rounded-lg px-4 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black-500"
           />
           {error.email && (
@@ -158,7 +162,6 @@ export default function Login() {
             placeholder="Password"
             value={password}
             onChange={handlePasswordChange}
-            required
             className="flex border border-gray-500 rounded-lg px-4 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black-500"
           />
           {error.password && (
@@ -172,24 +175,29 @@ export default function Login() {
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={handleConfirmPasswordChange}
-            required
             className="flex border border-gray-500 rounded-lg px-4 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black-500"
           />
           {error.confirmPassword && (
-            <div className="text-red-500 text-center text-sm text-sm">
+            <div className="text-red-500 text-center text-sm">
               {error.confirmPassword}
             </div>
           )}
           {role === "DOCTOR" && (
-            <input
-              type="text"
-              name="specialization"
-              placeholder="Specialization"
-              value={specialization}
-              onChange={(e) => setSpecialization(e.target.value)}
-              required
-              className="flex border border-gray-500 rounded-lg px-4 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black-500"
-            />
+            <>
+              <input
+                type="text"
+                name="specialization"
+                placeholder="Specialization"
+                value={specialization}
+                onChange={(e) => setSpecialization(e.target.value)}
+                className="flex border border-gray-500 rounded-lg px-4 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black-500"
+              />
+              {error.specialization && (
+                <div className="text-red-500 text-center text-sm">
+                  {error.specialization}
+                </div>
+              )}
+            </>
           )}
           <input
             type="url"

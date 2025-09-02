@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosInstance";
 
 export default function PatientDashboard() {
@@ -26,19 +26,23 @@ export default function PatientDashboard() {
       });
   };
 
-  axiosInstance.get("/doctors/specializations").then((res) => {
-    setSpecializations(res.data.data || []);
-    console.log(res.data.message);
-  });
-
-  axiosInstance
-    .get(
-      `/doctors?page=${page}&limit=${limit}&search=${name}&specialization=${specialization}`
-    )
-    .then((res) => {
-      setDoctors(res.data.data || []);
+  useEffect(() => {
+    axiosInstance.get("/specializations").then((res) => {
+      setSpecializations(res.data.data || []);
       console.log(res.data.message);
     });
+  }, []);
+
+  useEffect(() => {
+    axiosInstance
+      .get(
+        `/doctors?page=${page}&limit=${limit}&search=${name}&specialization=${specialization}`
+      )
+      .then((res) => {
+        setDoctors(res.data.data || []);
+        console.log(res.data.message);
+      });
+  }, [page, limit, name, specialization]);
 
   return (
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
@@ -72,26 +76,28 @@ export default function PatientDashboard() {
             <select
               className="border border-gray-500 bg-white rounded p-2 w-full"
               name="specialization"
+              value={specialization}
+              onChange={(e) => setSpecialization(e.target.value)}
             >
-              <option
-                className="cursor-pointer"
-                value=""
-                onClick={() => setSpecialization("")}
-              >
+              <option className="cursor-pointer" value="">
                 All
               </option>
               {specializations.map((spec) => (
-                <option
-                  key={spec}
-                  value={spec}
-                  className="cursor-pointer"
-                  onClick={() => setSpecialization(spec)}
-                >
+                <option key={spec} value={spec}>
                   {spec}
                 </option>
               ))}
             </select>
           </div>
+          <button
+            className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
+            onClick={() => {
+              setName("");
+              setSpecialization("");
+            }}
+          >
+            Clear Filter
+          </button>
         </div>
         <div className="flex-3 border border-gray-300 rounded-2xl p-5 flex flex-col gap-3">
           <h1 className="text-lg font-bold text-gray-700">

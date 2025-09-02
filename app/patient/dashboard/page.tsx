@@ -1,8 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function PatientDashboard() {
   const router = useRouter();
+  const [modal, setModal] = useState(false);
+  const [date, setDate] = useState("");
+  const [doctorName, setDoctorName] = useState("");
 
   return (
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
@@ -57,7 +61,10 @@ export default function PatientDashboard() {
                 <h1 className="text-lg font-bold text-gray-700">Doctor Name</h1>
                 <p className="text-gray-600">Specialization</p>
               </div>
-              <button className=" bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
+              <button
+                className=" bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+                onClick={() => setModal(true)}
+              >
                 Book Appointment
               </button>
             </div>
@@ -72,6 +79,45 @@ export default function PatientDashboard() {
           </div>
         </div>
       </div>
+      {modal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-7 shadow-xl w-full max-w-md border border-gray-300 flex flex-col gap-5">
+            <h2 className="text-xl font-bold">
+              Book Appointment with {doctorName}?
+            </h2>
+            <div className="flex flex-col gap-2">
+              <p>Please select a date for your appointment:</p>
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="border border-gray-400 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div className="flex flex-row justify-between gap-2">
+              <button
+                className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer"
+                onClick={() => {
+                  // Handle booking appointment
+                  setModal(false);
+                }}
+              >
+                Confirm Appointment
+              </button>
+              <button
+                className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 cursor-pointer"
+                onClick={() => {
+                  // Handle booking appointment
+                  setModal(false);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

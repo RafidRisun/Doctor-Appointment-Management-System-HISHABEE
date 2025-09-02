@@ -5,6 +5,7 @@ import { useState } from "react";
 export default function PatientDashboard() {
   const router = useRouter();
   const [status, setStatus] = useState("All");
+  const [modal, setModal] = useState(false);
 
   return (
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
@@ -29,25 +30,25 @@ export default function PatientDashboard() {
         <div className="flex-1 flex flex-col bg-gray-100 rounded-2xl border border-gray-300 p-5 gap-5">
           <div className="flex flex-row justify-between gap-3">
             <button
-              className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
+              className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 cursor-pointer"
               onClick={() => setStatus("All")}
             >
               All
             </button>
             <button
-              className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400"
+              className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 cursor-pointer"
               onClick={() => setStatus("Pending")}
             >
               Pending
             </button>
             <button
-              className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400"
+              className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400 cursor-pointer"
               onClick={() => setStatus("Cancelled")}
             >
               Cancelled
             </button>
             <button
-              className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400"
+              className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 cursor-pointer"
               onClick={() => setStatus("Completed")}
             >
               Completed
@@ -60,6 +61,9 @@ export default function PatientDashboard() {
                 <p className="text-lg font-bold">Doctor Name</p>
                 <p className="text-md">09/02/2025</p>
                 <button
+                  onClick={() => {
+                    setModal(true);
+                  }}
                   className={`px-4 py-2 rounded cursor-pointer ${
                     //item.status
                     status === "Pending"
@@ -74,6 +78,34 @@ export default function PatientDashboard() {
           </div>
         </div>
       </div>
+      {modal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-7 shadow-xl w-full max-w-md border border-gray-300 flex flex-col gap-5">
+            <h2 className="text-xl font-bold">Cancel Appointment with?</h2>
+
+            <div className="flex flex-row justify-between gap-2">
+              <button
+                className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer"
+                onClick={() => {
+                  // Handle booking appointment
+                  setModal(false);
+                }}
+              >
+                Yes
+              </button>
+              <button
+                className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 cursor-pointer"
+                onClick={() => {
+                  // Handle booking appointment
+                  setModal(false);
+                }}
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

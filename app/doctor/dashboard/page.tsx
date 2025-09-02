@@ -66,7 +66,7 @@ export default function DoctorDashboard() {
           <h1 className="text-2xl font-bold">{status} Appointments</h1>
           <div className="flex-1 overflow-y-auto gap-1">
             <div className="flex flex-row justify-between items-center border border-gray-300 p-2 px-4 bg-blue-200 rounded-lg shadow-sm cursor-pointer hover:bg-blue-300">
-              <p className="text-lg font-bold">Doctor Name</p>
+              <p className="text-lg font-bold">Patient Name</p>
               <p className="text-md">09/02/2025</p>
               <button
                 className={`px-4 py-2 rounded cursor-pointer ${

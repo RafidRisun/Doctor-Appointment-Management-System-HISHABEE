@@ -14,11 +14,27 @@ export default function PatientDashboard() {
   const [flag, setFlag] = useState(1);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/login");
+    }
+    const userRole = localStorage.getItem("userRole");
+    if (userRole === "DOCTOR") {
+      router.push("/doctor/dashboard");
+    }
+  }, []);
+
+  useEffect(() => {
     axiosInstance
       .get(`/appointments/patient?status=${status}&page=${page}`)
       .then((res) => {
         console.log(res.data.message);
         setAppointments(res.data.data);
+      })
+      .catch((error) => {
+        if (error.response.status === 403) {
+          router.push("/login");
+        }
       });
   }, [status, page, flag]);
 
@@ -40,7 +56,7 @@ export default function PatientDashboard() {
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
       <header className="w-full p-4 rounded-xl text-gray-700 flex justify-between items-center">
         <div className="flex gap-20 items-end">
-          <h1 className="text-2xl font-bold">My Appointments</h1>
+          <h1 className="text-2xl font-bold cursor-default">My Appointments</h1>
           <button
             className="text-lg font-bold hover:text-blue-500 cursor-pointer"
             onClick={() => router.push("/patient/dashboard")}
@@ -84,7 +100,9 @@ export default function PatientDashboard() {
             </button>
           </div>
           <div className="flex flex-col w-full h-full">
-            <h1 className="text-2xl font-bold">{status} Appointments</h1>
+            <h1 className="text-2xl font-bold cursor-default">
+              {status} Appointments
+            </h1>
             <div className="flex-1 overflow-y-auto">
               {appointments.map((item: any) => (
                 <div
@@ -103,9 +121,9 @@ export default function PatientDashboard() {
                       setModal(true);
                     }}
                     disabled={item.status !== "PENDING"}
-                    className={`px-4 py-2 rounded cursor-pointer ${
+                    className={`px-4 py-2 rounded  ${
                       item.status === "PENDING"
-                        ? "bg-red-500 text-white hover:bg-red-400"
+                        ? "bg-red-500 text-white hover:bg-red-400 cursor-pointer"
                         : "bg-gray-300 text-gray-700 cursor-not-allowed opacity-60"
                     }`}
                   >

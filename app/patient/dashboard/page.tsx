@@ -20,9 +20,6 @@ export default function PatientDashboard() {
     if (!token) {
       router.push("/login");
     }
-  }, []);
-
-  useEffect(() => {
     const userRole = localStorage.getItem("userRole");
     if (userRole === "DOCTOR") {
       router.push("/doctor/dashboard");
@@ -55,6 +52,11 @@ export default function PatientDashboard() {
       .then((res) => {
         setDoctors(res.data.data || []);
         console.log(res.data.message);
+      })
+      .catch((error) => {
+        if (error.response.status === 403) {
+          router.push("/login");
+        }
       });
   }, [page, limit, name, specialization]);
 
@@ -62,7 +64,9 @@ export default function PatientDashboard() {
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
       <header className="w-full p-4 rounded-xl text-gray-700 flex justify-between items-center">
         <div className="flex gap-20 items-end">
-          <h1 className="text-2xl font-bold">Patient Dashboard</h1>
+          <h1 className="text-2xl font-bold cursor-default">
+            Patient Dashboard
+          </h1>
           <button
             className="text-lg font-bold hover:text-blue-500 cursor-pointer"
             onClick={() => router.push("/patient/appointment")}
@@ -79,14 +83,18 @@ export default function PatientDashboard() {
       </header>
       <div className="w-full h-full flex flex-row gap-3">
         <div className="flex-1 flex flex-col bg-gray-100 rounded-2xl border border-gray-300 p-5 gap-5">
-          <h1 className="text-lg font-bold text-gray-700">Filter</h1>
+          <h1 className="text-lg font-bold text-gray-700 cursor-default">
+            Filter
+          </h1>
           <input
             className="border border-gray-500 bg-white rounded p-2 w-full"
             placeholder="Search for Doctors"
             onChange={(e) => setName(e.target.value)}
           />
           <div>
-            <p className="text-gray-700">Choose a Specialization:</p>
+            <p className="text-gray-700 cursor-default">
+              Choose a Specialization:
+            </p>
             <select
               className="border border-gray-500 bg-white rounded p-2 w-full"
               name="specialization"
@@ -104,7 +112,7 @@ export default function PatientDashboard() {
             </select>
           </div>
           <button
-            className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
+            className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 cursor-pointer"
             onClick={() => {
               setName("");
               setSpecialization("");
@@ -135,7 +143,7 @@ export default function PatientDashboard() {
                   <p className="text-gray-600">{doctor.specialization}</p>
                 </div>
                 <button
-                  className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+                  className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600 cursor-pointer"
                   onClick={() => {
                     setModal(true);
                     setDoctorId(doctor.id);

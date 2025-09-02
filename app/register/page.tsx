@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { set } from "zod";
+import axiosInstance from "@/utils/axiosInstance";
 
 export default function Login() {
   const router = useRouter();
@@ -65,9 +65,20 @@ export default function Login() {
 
     if (Object.keys(newError).length > 0) return;
 
-    // Perform login logic here
     console.log({ email, password, role });
-    router.push("/login");
+
+    const endpoint =
+      role === "DOCTOR" ? "/auth/register/doctor" : "/auth/register/patient";
+
+    const payload =
+      role === "DOCTOR"
+        ? { name, email, password, specialization }
+        : { name, email, password };
+
+    axiosInstance.post(endpoint, payload).then((res) => {
+      console.log(res.data.message);
+      router.push("/login");
+    });
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {

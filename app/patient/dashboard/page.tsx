@@ -1,12 +1,44 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import axiosInstance from "@/utils/axiosInstance";
 
 export default function PatientDashboard() {
   const router = useRouter();
   const [modal, setModal] = useState(false);
   const [date, setDate] = useState("");
-  const [doctorName, setDoctorName] = useState("");
+  const [specializations, setSpecializations] = useState<string[]>([]);
+  const [name, setName] = useState("");
+  const [doctors, setDoctors] = useState<string[]>([]);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [specialization, setSpecialization] = useState("");
+  const [doctorId, setDoctorId] = useState("");
+
+  const handleConfirmAppointment = () => {
+    axiosInstance
+      .post("/appointments", {
+        doctorId,
+        date,
+      })
+      .then((res) => {
+        console.log(res.data.message);
+      });
+  };
+
+  axiosInstance.get("/doctors/specializations").then((res) => {
+    setSpecializations(res.data.data || []);
+    console.log(res.data.message);
+  });
+
+  axiosInstance
+    .get(
+      `/doctors?page=${page}&limit=${limit}&search=${name}&specialization=${specialization}`
+    )
+    .then((res) => {
+      setDoctors(res.data.data || []);
+      console.log(res.data.message);
+    });
 
   return (
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
@@ -33,6 +65,7 @@ export default function PatientDashboard() {
           <input
             className="border border-gray-500 bg-white rounded p-2 w-full"
             placeholder="Search for Doctors"
+            onChange={(e) => setName(e.target.value)}
           />
           <div>
             <p className="text-gray-700">Choose a Specialization:</p>
@@ -40,10 +73,23 @@ export default function PatientDashboard() {
               className="border border-gray-500 bg-white rounded p-2 w-full"
               name="specialization"
             >
-              <option value="">All</option>
-              <option value="Cardiologist">Cardiologist</option>
-              <option value="Dentist">Dentist</option>
-              <option value="Neurologist">Neurologist</option>
+              <option
+                className="cursor-pointer"
+                value=""
+                onClick={() => setSpecialization("")}
+              >
+                All
+              </option>
+              {specializations.map((spec) => (
+                <option
+                  key={spec}
+                  value={spec}
+                  className="cursor-pointer"
+                  onClick={() => setSpecialization(spec)}
+                >
+                  {spec}
+                </option>
+              ))}
             </select>
           </div>
         </div>
@@ -52,28 +98,46 @@ export default function PatientDashboard() {
             Available Doctors & Specialists
           </h1>
           <div className="flex-1 flex flex-wrap gap-5 overflow-y-auto">
-            <div className="flex flex-col w-60 h-80 bg-gray-100 rounded-xl border border-gray-300 p-2 shadow-md gap-2">
-              <img
-                src="/consultancy2.png"
-                className="w-full h-8/12 object-cover rounded-lg"
-              />
-              <div className="p-2 flex flex-col items-start gap-1">
-                <h1 className="text-lg font-bold text-gray-700">Doctor Name</h1>
-                <p className="text-gray-600">Specialization</p>
-              </div>
-              <button
-                className=" bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
-                onClick={() => setModal(true)}
+            {doctors.map((doctor: any) => (
+              <div
+                key={doctor.id}
+                className="flex flex-col w-60 h-80 bg-gray-100 rounded-xl border border-gray-300 p-2 shadow-md gap-2"
               >
-                Book Appointment
-              </button>
-            </div>
+                <img
+                  src={doctor.photo_url || "/consultancy2.png"}
+                  className="w-full h-8/12 object-cover rounded-lg"
+                  alt={doctor.name}
+                />
+                <div className="p-2 flex flex-col items-start gap-1">
+                  <h1 className="text-lg font-bold text-gray-700">
+                    {doctor.name}
+                  </h1>
+                  <p className="text-gray-600">{doctor.specialization}</p>
+                </div>
+                <button
+                  className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+                  onClick={() => {
+                    setDoctorId(doctor._id);
+                    setName(doctor.name);
+                    setModal(true);
+                  }}
+                >
+                  Book Appointment
+                </button>
+              </div>
+            ))}
           </div>
           <div className="flex flex-row gap-5 justify-between">
-            <button className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600">
+            <button
+              className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
+              onClick={() => setPage((page) => Math.max(page - 1, 1))}
+            >
               Previous
             </button>
-            <button className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600">
+            <button
+              className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
+              onClick={() => setPage((page) => page + 1)}
+            >
               Next
             </button>
           </div>
@@ -82,9 +146,7 @@ export default function PatientDashboard() {
       {modal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-7 shadow-xl w-full max-w-md border border-gray-300 flex flex-col gap-5">
-            <h2 className="text-xl font-bold">
-              Book Appointment with {doctorName}?
-            </h2>
+            <h2 className="text-xl font-bold">Book Appointment with {name}?</h2>
             <div className="flex flex-col gap-2">
               <p>Please select a date for your appointment:</p>
               <input
@@ -99,7 +161,7 @@ export default function PatientDashboard() {
               <button
                 className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer"
                 onClick={() => {
-                  // Handle booking appointment
+                  handleConfirmAppointment();
                   setModal(false);
                 }}
               >

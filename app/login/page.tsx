@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import axiosInstance from "@/utils/axiosInstance";
 
 export default function Login() {
   const router = useRouter();
@@ -37,14 +38,21 @@ export default function Login() {
 
     if (Object.keys(newError).length > 0) return;
 
-    // Perform login logic here
     console.log({ email, password, role });
 
-    if (role === "DOCTOR") {
-      router.push("/doctor/dashboard");
-    } else if (role === "PATIENT") {
-      router.push("/patient/dashboard");
-    }
+    axiosInstance
+      .post("/auth/login", { email, password, role })
+      .then((res) => {
+        console.log(res.data.message);
+        if (role === "DOCTOR") {
+          router.push("/doctor/dashboard");
+        } else if (role === "PATIENT") {
+          router.push("/patient/dashboard");
+        }
+      })
+      .catch((err) => {
+        setError({ password: "Invalid credentials or server error" });
+      });
   };
 
   return (

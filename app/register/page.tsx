@@ -76,7 +76,7 @@ export default function Login() {
         : { name, email, password };
 
     axiosInstance.post(endpoint, payload).then((res) => {
-      console.log(res.data.message);
+      console.log(res.data.data.message);
       router.push("/login");
     });
   };

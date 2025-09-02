@@ -44,9 +44,12 @@ export default function Login() {
       .post("/auth/login", { email, password, role })
       .then((res) => {
         console.log(res.data.message);
-        if (role === "DOCTOR") {
+        localStorage.setItem("token", res.data.data.token);
+        localStorage.setItem("userRole", res.data.data.user.role);
+        localStorage.setItem("userName", res.data.data.user.name);
+        if (res.data.data.user.role === "DOCTOR") {
           router.push("/doctor/dashboard");
-        } else if (role === "PATIENT") {
+        } else if (res.data.data.user.role === "PATIENT") {
           router.push("/patient/dashboard");
         }
       })

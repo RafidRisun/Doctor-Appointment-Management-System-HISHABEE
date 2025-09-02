@@ -15,6 +15,20 @@ export default function PatientDashboard() {
   const [specialization, setSpecialization] = useState("");
   const [doctorId, setDoctorId] = useState("");
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/login");
+    }
+  }, []);
+
+  useEffect(() => {
+    const userRole = localStorage.getItem("userRole");
+    if (userRole === "DOCTOR") {
+      router.push("/doctor/dashboard");
+    }
+  }, []);
+
   const handleConfirmAppointment = () => {
     axiosInstance
       .post("/appointments", {
@@ -123,9 +137,8 @@ export default function PatientDashboard() {
                 <button
                   className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
                   onClick={() => {
-                    setDoctorId(doctor._id);
-                    setName(doctor.name);
                     setModal(true);
+                    setDoctorId(doctor.id);
                   }}
                 >
                   Book Appointment
@@ -152,7 +165,7 @@ export default function PatientDashboard() {
       {modal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-7 shadow-xl w-full max-w-md border border-gray-300 flex flex-col gap-5">
-            <h2 className="text-xl font-bold">Book Appointment with {name}?</h2>
+            <h2 className="text-xl font-bold">Book Appointment?</h2>
             <div className="flex flex-col gap-2">
               <p>Please select a date for your appointment:</p>
               <input

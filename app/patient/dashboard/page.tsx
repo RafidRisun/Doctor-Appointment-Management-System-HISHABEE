@@ -48,19 +48,27 @@ export default function PatientDashboard() {
             Available Doctors & Specialists
           </h1>
           <div className="flex-1 flex flex-wrap gap-5 overflow-y-auto">
-            <div className="flex flex-col w-60 h-80 bg-gray-100 rounded-2xl p-2 shadow-md gap-2">
+            <div className="flex flex-col w-60 h-80 bg-gray-100 rounded-xl border border-gray-300 p-2 shadow-md gap-2">
               <img
                 src="/consultancy2.png"
-                className="w-full h-8/12 object-cover rounded-xl"
+                className="w-full h-8/12 object-cover rounded-lg"
               />
               <div className="p-2 flex flex-col items-start gap-1">
                 <h1 className="text-lg font-bold text-gray-700">Doctor Name</h1>
                 <p className="text-gray-600">Specialization</p>
               </div>
-              <button className=" bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600">
+              <button className=" bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
                 Book Appointment
               </button>
             </div>
+          </div>
+          <div className="flex flex-row gap-5 justify-between">
+            <button className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600">
+              Previous
+            </button>
+            <button className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600">
+              Next
+            </button>
           </div>
         </div>
       </div>

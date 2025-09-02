@@ -56,7 +56,7 @@ export default function Login() {
           alt="Login Image"
         />
       </div>
-      <div className="basis-1/2 flex flex-col justify-center items-center p-50 gap-8">
+      <div className="basis-1/2 min-h-screen flex flex-col justify-center items-center p-50 gap-8">
         <h1 className="text-3xl font-bold">Login to your Account</h1>
         <form className="flex flex-col gap-7 w-full" onSubmit={handleSubmit}>
           <div className="flex items-center w-full justify-between">

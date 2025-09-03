@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosInstance";
 
 export default function Login() {
@@ -11,6 +11,7 @@ export default function Login() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("");
   const [specialization, setSpecialization] = useState("");
+  const [specializations, setSpecializations] = useState<string[]>([]);
   // Error state for validation
   const [error, setError] = useState<{
     name?: string;
@@ -88,6 +89,18 @@ export default function Login() {
     });
   };
 
+  // Fetch all available specializations
+  const getSpecializations = () => {
+    axiosInstance.get("/specializations").then((res) => {
+      setSpecializations(res.data.data || []);
+      console.log(res.data.message);
+    });
+  };
+
+  useEffect(() => {
+    getSpecializations();
+  }, []);
+
   // Live password validation
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -126,36 +139,29 @@ export default function Login() {
       {/* Registration form section */}
       <div className="w-full sm:basis-1/2 min-h-screen flex flex-col justify-center items-center p-20 sm:p-50 gap-8">
         <h1 className="text-3xl font-bold">Register</h1>
+        {/* Role selection */}
+        <div className="flex items-center w-full justify-between gap-2">
+          <button
+            className={`w-full ${
+              role === "DOCTOR" ? "bg-gray-500" : "bg-gray-700"
+            } text-white px-4 py-2 rounded-lg hover:bg-gray-600 cursor-pointer`}
+            onClick={() => setRole("DOCTOR")}
+          >
+            Doctor
+          </button>
+          <button
+            className={`w-full ${
+              role === "PATIENT" ? "bg-gray-500" : "bg-gray-700"
+            } text-white px-4 py-2 rounded-lg hover:bg-gray-600 cursor-pointer`}
+            onClick={() => setRole("PATIENT")}
+          >
+            Patient
+          </button>
+        </div>
+        {error.role && (
+          <div className="text-red-500 text-center text-sm">{error.role}</div>
+        )}
         <form className="flex flex-col gap-7 w-full" onSubmit={handleSubmit}>
-          {/* Role selection */}
-          <div className="flex items-center w-full justify-between">
-            <p className="text-lg">Are you a Doctor or a Patient?</p>
-            <div className="flex items-center gap-2">
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="role"
-                  value="DOCTOR"
-                  className="accent-gray-900"
-                  onChange={(e) => setRole(e.target.value)}
-                />
-                Doctor
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="role"
-                  value="PATIENT"
-                  className="accent-gray-900"
-                  onChange={(e) => setRole(e.target.value)}
-                />
-                Patient
-              </label>
-            </div>
-          </div>
-          {error.role && (
-            <div className="text-red-500 text-center text-sm">{error.role}</div>
-          )}
           {/* Name input */}
           <input
             type="text"
@@ -213,19 +219,21 @@ export default function Login() {
           {/* Specialization for doctors only */}
           {role === "DOCTOR" && (
             <>
-              <input
-                type="text"
+              <select
+                className="flex border border-gray-500 rounded-lg px-4 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black-500"
                 name="specialization"
-                placeholder="Specialization"
                 value={specialization}
                 onChange={(e) => setSpecialization(e.target.value)}
-                className="flex border border-gray-500 rounded-lg px-4 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black-500"
-              />
-              {error.specialization && (
-                <div className="text-red-500 text-center text-sm">
-                  {error.specialization}
-                </div>
-              )}
+              >
+                <option value="" disabled>
+                  Select your Specialization
+                </option>
+                {specializations.map((spec) => (
+                  <option key={spec} value={spec}>
+                    {spec}
+                  </option>
+                ))}
+              </select>
             </>
           )}
           {/* Optional photo URL */}

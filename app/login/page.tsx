@@ -77,36 +77,29 @@ export default function Login() {
       {/* Login form section */}
       <div className="w-full sm:basis-1/2 min-h-screen flex flex-col justify-center items-center p-20 sm:p-50 gap-8">
         <h1 className="text-3xl font-bold">Login to your Account</h1>
+        {/* Role selection */}
+        <div className="flex items-center w-full justify-between gap-2">
+          <button
+            className={`w-full ${
+              role === "DOCTOR" ? "bg-gray-500" : "bg-gray-700"
+            } text-white px-4 py-2 rounded-lg hover:bg-gray-600 cursor-pointer`}
+            onClick={() => setRole("DOCTOR")}
+          >
+            Doctor
+          </button>
+          <button
+            className={`w-full ${
+              role === "PATIENT" ? "bg-gray-500" : "bg-gray-700"
+            } text-white px-4 py-2 rounded-lg hover:bg-gray-600 cursor-pointer`}
+            onClick={() => setRole("PATIENT")}
+          >
+            Patient
+          </button>
+        </div>
+        {error.role && (
+          <div className="text-red-500 text-center text-sm">{error.role}</div>
+        )}
         <form className="flex flex-col gap-7 w-full" onSubmit={handleSubmit}>
-          {/* Role selection */}
-          <div className="flex items-center w-full justify-between">
-            <p className="text-lg">Are you a Doctor or a Patient?</p>
-            <div className="flex items-center gap-2">
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="role"
-                  value="DOCTOR"
-                  className="accent-gray-900"
-                  onChange={(e) => setRole(e.target.value)}
-                />
-                Doctor
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="role"
-                  value="PATIENT"
-                  className="accent-gray-900"
-                  onChange={(e) => setRole(e.target.value)}
-                />
-                Patient
-              </label>
-            </div>
-          </div>
-          {error.role && (
-            <div className="text-red-500 text-center text-sm">{error.role}</div>
-          )}
           {/* Email input */}
           <input
             type="email"

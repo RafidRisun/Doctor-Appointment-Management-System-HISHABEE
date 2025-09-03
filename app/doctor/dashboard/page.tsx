@@ -2,14 +2,13 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosInstance";
-import { set } from "zod";
 
 export default function DoctorDashboard() {
   const router = useRouter();
   const [status, setStatus] = useState("");
   const [date, setDate] = useState("");
   const [page, setPage] = useState(1);
-  const [appointments, setAppointments] = useState([]);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [modal, setModal] = useState(false);
   const [modalAppointmentId, setModalAppointmentId] = useState("");
   const [modalNewStatus, setModalNewStatus] = useState("");
@@ -17,6 +16,13 @@ export default function DoctorDashboard() {
   const [notification, setNotification] = useState("");
   const [errorNotification, setErrorNotification] = useState("");
   const [loading, setLoading] = useState(true);
+
+  type Appointment = {
+    id: string;
+    patient: { name: string };
+    date: string;
+    status: string;
+  };
 
   const fetchAppointments = () => {
     axiosInstance
@@ -91,8 +97,8 @@ export default function DoctorDashboard() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-full">
-        <p className="text-gray-700">Loading...</p>
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-4xl font-bold text-gray-700">Loading...</p>
       </div>
     );
   }
@@ -100,7 +106,9 @@ export default function DoctorDashboard() {
   return (
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
       <header className="w-full p-4 rounded-xl text-gray-700 flex justify-between items-center">
-        <h1 className="text-lg sm:text-2xl font-bold">Doctor's Dashboard</h1>
+        <h1 className="text-lg sm:text-2xl font-bold">
+          Doctor&apos;s Dashboard
+        </h1>
         <button
           className="bg-gray-700 px-4 py-2 rounded text-white hover:bg-gray-600 cursor-pointer text-sm sm:text-md"
           onClick={() => router.push("/login")}
@@ -166,7 +174,7 @@ export default function DoctorDashboard() {
             {status} Appointments
           </h1>
           <div className="flex-1 flex flex-col overflow-y-auto gap-2">
-            {appointments.map((item: any) => (
+            {appointments.map((item: Appointment) => (
               <div
                 key={item.id}
                 className="flex flex-row justify-between items-center border-b border-gray-300 p-3"

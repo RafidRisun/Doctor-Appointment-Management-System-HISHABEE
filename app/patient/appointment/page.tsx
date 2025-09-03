@@ -2,19 +2,26 @@
 import axiosInstance from "@/utils/axiosInstance";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { set } from "zod";
 
 export default function PatientDashboard() {
   const router = useRouter();
   const [status, setStatus] = useState("");
   const [modal, setModal] = useState(false);
   const [page, setPage] = useState(1);
-  const [appointments, setAppointments] = useState([]);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [appointmentId, setAppointmentId] = useState("");
   const [flag, setFlag] = useState(1);
   const [notification, setNotification] = useState("");
   const [errorNotification, setErrorNotification] = useState("");
   const [loading, setLoading] = useState(true);
+
+  type Appointment = {
+    id: string;
+    doctor: { name: string };
+    createdAt: string;
+    updatedAt: string;
+    status: string;
+  };
 
   const checkAuth = () => {
     const token = localStorage.getItem("token");
@@ -89,8 +96,8 @@ export default function PatientDashboard() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-full">
-        <p className="text-gray-700">Loading...</p>
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-4xl font-bold text-gray-700">Loading...</p>
       </div>
     );
   }
@@ -149,7 +156,7 @@ export default function PatientDashboard() {
               {status} Appointments
             </h1>
             <div className="flex-1 overflow-y-auto">
-              {appointments.map((item: any) => (
+              {appointments.map((item: Appointment) => (
                 <div
                   key={item.id}
                   className="flex flex-row justify-between items-center border-b border-gray-300 p-3"

@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosInstance";
-import { set } from "zod";
 
 export default function PatientDashboard() {
   const router = useRouter();
@@ -10,7 +9,7 @@ export default function PatientDashboard() {
   const [date, setDate] = useState("");
   const [specializations, setSpecializations] = useState<string[]>([]);
   const [name, setName] = useState("");
-  const [doctors, setDoctors] = useState<string[]>([]);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [specialization, setSpecialization] = useState("");
@@ -18,6 +17,13 @@ export default function PatientDashboard() {
   const [notification, setNotification] = useState("");
   const [errorNotification, setErrorNotification] = useState("");
   const [loading, setLoading] = useState(true);
+
+  type Doctor = {
+    id: string;
+    name: string;
+    specialization: string;
+    photo_url: string;
+  };
 
   const checkAuth = () => {
     const token = localStorage.getItem("token");
@@ -101,8 +107,8 @@ export default function PatientDashboard() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-full">
-        <p className="text-gray-700">Loading...</p>
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-4xl font-bold text-gray-700">Loading...</p>
       </div>
     );
   }
@@ -173,7 +179,7 @@ export default function PatientDashboard() {
             Available Doctors & Specialists
           </h1>
           <div className="flex-1 flex flex-wrap gap-5 overflow-y-auto">
-            {doctors.map((doctor: any) => (
+            {doctors.map((doctor: Doctor) => (
               <div
                 key={doctor.id}
                 className="flex flex-col w-60 h-80 bg-gray-100 rounded-xl border border-gray-300 p-2 shadow-md gap-2"

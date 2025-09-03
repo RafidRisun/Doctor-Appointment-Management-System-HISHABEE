@@ -17,22 +17,18 @@ An advanced, full-stack web application for managing doctor appointments, built 
 - Patient and Doctor authentication & role-based dashboards
 - Browse, search, and filter doctors by specialization
 - Book, view, and manage appointments
-- Real-time notifications and error handling
 - Responsive, accessible UI with Tailwind CSS
 - API integration with Axios (token-based auth)
-- State management with React hooks
 - Modern, clean design and UX
 
 ---
 
 ## 🛠️ Tech Stack
 
-- [Next.js](https://nextjs.org/) (App Router, SSR/CSR)
+- [Next.js](https://nextjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Axios](https://axios-http.com/)
-- [Zustand](https://zustand-demo.pmnd.rs/) (optional, for global state)
-- [React Query](https://tanstack.com/query/latest) (optional, for API caching)
 
 ---
 
@@ -48,6 +44,7 @@ doctor-apointment-mgt-system/
 │   ├── register/          # Registration page
 │   ├── patient/
 │   │   └── dashboard/     # Patient dashboard
+│   │   └── appointment/   # Patient appointment
 │   └── doctor/
 │       └── dashboard/     # Doctor dashboard
 ├── public/                # Static assets
@@ -102,12 +99,6 @@ Deploy easily on [Vercel](https://vercel.com/) for production. See [Next.js depl
 - Patients: Search/filter doctors, book appointments, view your bookings
 - Doctors: View/manage appointments, update status
 - Log out securely
-
----
-
-## 📝 Contributing
-
-Contributions are welcome! Please open issues or pull requests for improvements, bug fixes, or new features.
 
 ---
 

@@ -1,0 +1,85 @@
+"use client";
+import { useRouter } from "next/navigation";
+import { FaUserDoctor } from "react-icons/fa6";
+import { MdDashboard } from "react-icons/md";
+import { FaClipboardList } from "react-icons/fa";
+import { IoIosLogOut } from "react-icons/io";
+import { FaHospitalUser } from "react-icons/fa6";
+
+type DoctorHeaderProps = {
+  userType: string;
+  userName: string;
+  currentPage?: string;
+};
+
+export default function Header({
+  userName,
+  userType,
+  currentPage,
+}: DoctorHeaderProps) {
+  const router = useRouter();
+  return (
+    <header className="w-full p-4 rounded-xl text-gray-700 flex justify-between items-center">
+      <div className="flex gap-2 items-center">
+        {userType === "DOCTOR" && (
+          <>
+            <FaUserDoctor className="text-lg sm:text-2xl" />
+            <h1 className="text-md sm:text-xl">Welcome Doctor {userName}</h1>
+          </>
+        )}
+        {userType === "PATIENT" && (
+          <>
+            <FaHospitalUser className="text-lg sm:text-2xl" />
+            <h1 className="text-md sm:text-xl">Welcome {userName}</h1>
+          </>
+        )}
+      </div>
+      {userType === "PATIENT" && (
+        <div className="flex gap-2">
+          <button
+            className={`flex gap-2 items-center ${
+              currentPage === "dashboard" ? "bg-gray-400" : "bg-gray-200"
+            } px-4 py-2 rounded hover:bg-gray-400 cursor-pointer text-md sm:text-lg ${
+              currentPage === "dashboard" ? "text-white" : "text-gray-700"
+            }`}
+            onClick={() => router.push("/patient/dashboard")}
+          >
+            <MdDashboard
+              className={`text-md sm:text-lg ${
+                currentPage === "dashboard" ? "text-white" : "text-gray-700"
+              }`}
+            />
+            Dashboard
+          </button>
+          <button
+            className={`flex gap-2 items-center ${
+              currentPage === "appointments" ? "bg-gray-400" : "bg-gray-200"
+            } px-4 py-2 rounded hover:bg-gray-400 cursor-pointer text-md sm:text-lg ${
+              currentPage === "appointments" ? "text-white" : "text-gray-700"
+            }`}
+            onClick={() => router.push("/patient/appointment")}
+          >
+            <FaClipboardList className="text-md sm:text-lg" />
+            Appointments
+          </button>
+        </div>
+      )}
+      {userType === "DOCTOR" && (
+        <h1 className="text-md sm:text-lg font-bold">
+          Doctor&apos;s Dashboard
+        </h1>
+      )}
+      <button
+        className="flex gap-2 items-center bg-gray-700 px-4 py-2 rounded text-white hover:bg-gray-600 cursor-pointer text-sm sm:text-md"
+        onClick={() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("userRole");
+          router.push("/login");
+        }}
+      >
+        Log Out
+        <IoIosLogOut className="text-md sm:text-lg" />
+      </button>
+    </header>
+  );
+}

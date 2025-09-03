@@ -2,6 +2,9 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosInstance";
+import Header from "@/app/components/header";
+import { FaFilter } from "react-icons/fa";
+import Pagination from "@/app/components/pagination";
 
 export default function PatientDashboard() {
   const router = useRouter();
@@ -17,6 +20,7 @@ export default function PatientDashboard() {
   const [notification, setNotification] = useState("");
   const [errorNotification, setErrorNotification] = useState("");
   const [loading, setLoading] = useState(true);
+  const [patientName, setPatientName] = useState("");
 
   // Doctor type definition for API data
   type Doctor = {
@@ -94,6 +98,7 @@ export default function PatientDashboard() {
   useEffect(() => {
     getSpecializations();
     checkAuth();
+    setPatientName(localStorage.userName);
   }, []);
 
   // Auto-hide error notification after 5s
@@ -125,35 +130,21 @@ export default function PatientDashboard() {
   return (
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
       {/* Header with appointments and logout */}
-      <header className="w-full p-4 rounded-xl text-gray-700 flex justify-between items-center">
-        <div className="flex gap-5 sm:gap-20 items-end">
-          <h1 className="text-lg sm:text-2xl font-bold cursor-default">
-            Patient Dashboard
-          </h1>
-          <button
-            className="text-md sm:text-lg font-bold hover:text-blue-500 cursor-pointer"
-            onClick={() => router.push("/patient/appointment")}
-          >
-            My Appointments
-          </button>
-        </div>
-        <button
-          className="bg-gray-700 px-4 py-2 rounded text-white hover:bg-gray-600 cursor-pointer text-sm sm:text-md"
-          onClick={() => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("userRole");
-            router.push("/login");
-          }}
-        >
-          Log Out
-        </button>
-      </header>
+      <Header
+        userName={patientName}
+        userType="PATIENT"
+        currentPage="dashboard"
+      />
       <div className="w-full h-full flex flex-col sm:flex-row gap-3">
         {/* Filter sidebar */}
         <div className="flex-1 flex flex-col bg-gray-100 rounded-2xl border border-gray-300 p-5 gap-5">
-          <h1 className="text-lg font-bold text-gray-700 cursor-default">
-            Filter
-          </h1>
+          <div className="flex flex-row gap-2 items-center">
+            <h1 className="text-lg font-bold text-gray-700 cursor-default">
+              Filter
+            </h1>
+            <FaFilter className="text-sm sm:text-md" />
+          </div>
+
           <input
             className="border border-gray-500 bg-white rounded p-2 w-full"
             placeholder="Search for Doctors"
@@ -224,20 +215,7 @@ export default function PatientDashboard() {
             ))}
           </div>
           {/* Pagination */}
-          <div className="flex flex-row gap-5 justify-between">
-            <button
-              className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
-              onClick={() => setPage((page) => Math.max(page - 1, 1))}
-            >
-              Previous
-            </button>
-            <button
-              className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
-              onClick={() => setPage((page) => page + 1)}
-            >
-              Next
-            </button>
-          </div>
+          <Pagination setPage={setPage} currentPage={page} />
         </div>
       </div>
       {/* Book appointment modal */}

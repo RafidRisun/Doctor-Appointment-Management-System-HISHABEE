@@ -2,6 +2,10 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosInstance";
+import { FaUserDoctor } from "react-icons/fa6";
+import Header from "@/app/components/header";
+import Pagination from "@/app/components/pagination";
+import { FaFilter } from "react-icons/fa";
 
 export default function DoctorDashboard() {
   const router = useRouter();
@@ -16,6 +20,7 @@ export default function DoctorDashboard() {
   const [notification, setNotification] = useState("");
   const [errorNotification, setErrorNotification] = useState("");
   const [loading, setLoading] = useState(true);
+  const [doctorName, setDoctorName] = useState("");
 
   // Appointment type definition for API data
   type Appointment = {
@@ -84,6 +89,7 @@ export default function DoctorDashboard() {
   // Check authentication on mount
   useEffect(() => {
     checkAuth();
+    setDoctorName(localStorage.userName);
   }, []);
 
   // Auto-hide notification after 5s
@@ -114,26 +120,18 @@ export default function DoctorDashboard() {
   // Main dashboard UI
   return (
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
-      {/* Header with logout */}
-      <header className="w-full p-4 rounded-xl text-gray-700 flex justify-between items-center">
-        <h1 className="text-lg sm:text-2xl font-bold">
-          Doctor&apos;s Dashboard
-        </h1>
-        <button
-          className="bg-gray-700 px-4 py-2 rounded text-white hover:bg-gray-600 cursor-pointer text-sm sm:text-md"
-          onClick={() => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("userRole");
-            router.push("/login");
-          }}
-        >
-          Log Out
-        </button>
-      </header>
+      {/* Header */}
+      <Header userName={doctorName} userType="DOCTOR" />
+      {/* Body */}
       <div className="w-full h-full flex flex-col sm:flex-row gap-3">
         {/* Filter sidebar */}
         <div className="flex-1 flex flex-col bg-gray-100 rounded-2xl border border-gray-300 p-5 gap-5">
-          <h1 className="text-md sm:text-lg font-bold text-gray-700">Filter</h1>
+          <div className="flex flex-row gap-2 items-center">
+            <h1 className="text-lg font-bold text-gray-700 cursor-default">
+              Filter
+            </h1>
+            <FaFilter className="text-sm sm:text-md" />
+          </div>
           <label className="font-semibold text-gray-700">
             Filter by Status:
           </label>
@@ -244,20 +242,7 @@ export default function DoctorDashboard() {
             </table>
           </div>
           {/* Pagination */}
-          <div className="flex flex-row gap-5 justify-between">
-            <button
-              className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
-              onClick={() => setPage((page) => Math.max(page - 1, 1))}
-            >
-              Previous
-            </button>
-            <button
-              className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
-              onClick={() => setPage((page) => page + 1)}
-            >
-              Next
-            </button>
-          </div>
+          <Pagination setPage={setPage} currentPage={page} />
         </div>
       </div>
       {/* Status update modal */}

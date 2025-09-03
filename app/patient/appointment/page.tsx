@@ -1,4 +1,6 @@
 "use client";
+import Header from "@/app/components/header";
+import Pagination from "@/app/components/pagination";
 import axiosInstance from "@/utils/axiosInstance";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,6 +16,7 @@ export default function PatientDashboard() {
   const [notification, setNotification] = useState("");
   const [errorNotification, setErrorNotification] = useState("");
   const [loading, setLoading] = useState(true);
+  const [patientName, setPatientName] = useState("");
 
   // Appointment type definition for API data
   type Appointment = {
@@ -60,6 +63,7 @@ export default function PatientDashboard() {
   // Check authentication on mount
   useEffect(() => {
     checkAuth();
+    setPatientName(localStorage.userName);
   }, []);
 
   // Cancel an appointment
@@ -114,29 +118,11 @@ export default function PatientDashboard() {
   return (
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
       {/* Header with dashboard and logout */}
-      <header className="w-full p-4 rounded-xl text-gray-700 flex justify-between items-center">
-        <div className="flex gap-5 sm:gap-20 items-end">
-          <h1 className="text-lg sm:text-2xl font-bold cursor-default">
-            My Appointments
-          </h1>
-          <button
-            className="text-md sm:text-lg font-bold hover:text-blue-500 cursor-pointer"
-            onClick={() => router.push("/patient/dashboard")}
-          >
-            Dashboard
-          </button>
-        </div>
-        <button
-          className="bg-gray-700 px-4 py-2 rounded text-white hover:bg-gray-600 cursor-pointer text-sm sm:text-md"
-          onClick={() => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("userRole");
-            router.push("/login");
-          }}
-        >
-          Log Out
-        </button>
-      </header>
+      <Header
+        userName={patientName}
+        userType="PATIENT"
+        currentPage="appointments"
+      />
       <div className="w-full h-full flex flex-row gap-3">
         {/* Filter and appointments list */}
         <div className="flex-1 flex flex-col bg-gray-100 rounded-2xl border border-gray-300 p-5 gap-5">
@@ -209,27 +195,14 @@ export default function PatientDashboard() {
             </div>
           </div>
           {/* Pagination */}
-          <div className="flex flex-row gap-5 justify-between">
-            <button
-              className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
-              onClick={() => setPage((page) => Math.max(page - 1, 1))}
-            >
-              Previous
-            </button>
-            <button
-              className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
-              onClick={() => setPage((page) => page + 1)}
-            >
-              Next
-            </button>
-          </div>
+          <Pagination setPage={setPage} currentPage={page} />
         </div>
       </div>
       {/* Cancel confirmation modal */}
       {modal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-7 shadow-xl w-full max-w-md border border-gray-300 flex flex-col gap-5">
-            <h2 className="text-xl font-bold">Cancel Appointment</h2>
+            <h2 className="text-xl font-bold">Cancel Appointment?</h2>
             <div className="flex flex-row justify-between gap-2">
               <button
                 className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer"

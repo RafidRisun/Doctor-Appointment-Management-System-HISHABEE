@@ -132,8 +132,8 @@ export default function PatientDashboard() {
                 className="flex flex-col w-60 h-80 bg-gray-100 rounded-xl border border-gray-300 p-2 shadow-md gap-2"
               >
                 <img
-                  src={doctor.photo_url || "/consultancy2.png"}
-                  className="w-full h-8/12 object-cover rounded-lg"
+                  src={doctor.photo_url || "/doctor_default.jpg"}
+                  className="w-full h-7/12 min-h-7/12 max-h-7/12 object-cover rounded-lg"
                   alt={doctor.name}
                 />
                 <div className="p-2 flex flex-col items-start gap-1">

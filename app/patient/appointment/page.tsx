@@ -30,6 +30,7 @@ export default function PatientDashboard() {
       .then((res) => {
         console.log(res.data.message);
         setAppointments(res.data.data);
+        //setAppointments(mockAppointments);
       })
       .catch((error) => {
         if (error.response.status === 403) {
@@ -180,3 +181,34 @@ export default function PatientDashboard() {
     </div>
   );
 }
+
+// const mockAppointments = [
+//   {
+//     id: "p1",
+//     doctor: { name: "Dr. John Doe" },
+//     status: "PENDING",
+//     createdAt: "2025-09-05",
+//     updatedAt: "2025-09-05",
+//   },
+//   {
+//     id: "p2",
+//     doctor: { name: "Dr. Jane Smith" },
+//     status: "COMPLETED",
+//     createdAt: "2025-09-04",
+//     updatedAt: "2025-09-06",
+//   },
+//   {
+//     id: "p3",
+//     doctor: { name: "Dr. Alice Johnson" },
+//     status: "CANCELLED",
+//     createdAt: "2025-09-03",
+//     updatedAt: "2025-09-04",
+//   },
+//   {
+//     id: "p4",
+//     doctor: { name: "Dr. Bob Brown" },
+//     status: "PENDING",
+//     createdAt: "2025-09-07",
+//     updatedAt: "2025-09-07",
+//   },
+// ];

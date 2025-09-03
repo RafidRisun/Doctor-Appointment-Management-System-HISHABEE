@@ -56,17 +56,19 @@ export default function PatientDashboard() {
   return (
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
       <header className="w-full p-4 rounded-xl text-gray-700 flex justify-between items-center">
-        <div className="flex gap-20 items-end">
-          <h1 className="text-2xl font-bold cursor-default">My Appointments</h1>
+        <div className="flex gap-5 sm:gap-20 items-end">
+          <h1 className="text-lg sm:text-2xl font-bold cursor-default">
+            My Appointments
+          </h1>
           <button
-            className="text-lg font-bold hover:text-blue-500 cursor-pointer"
+            className="text-md sm:text-lg font-bold hover:text-blue-500 cursor-pointer"
             onClick={() => router.push("/patient/dashboard")}
           >
             Dashboard
           </button>
         </div>
         <button
-          className="bg-gray-700 px-4 py-2 rounded text-white hover:bg-gray-600 cursor-pointer"
+          className="bg-gray-700 px-4 py-2 rounded text-white hover:bg-gray-600 cursor-pointer text-sm sm:text-md"
           onClick={() => router.push("/login")}
         >
           Log Out
@@ -74,7 +76,7 @@ export default function PatientDashboard() {
       </header>
       <div className="w-full h-full flex flex-row gap-3">
         <div className="flex-1 flex flex-col bg-gray-100 rounded-2xl border border-gray-300 p-5 gap-5">
-          <div className="flex flex-row justify-between gap-3">
+          <div className="flex flex-row justify-between gap-1 sm:gap-3">
             <button
               className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 cursor-pointer"
               onClick={() => setStatus("")}

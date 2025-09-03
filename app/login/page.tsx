@@ -60,14 +60,14 @@ export default function Login() {
 
   return (
     <div className="max-h-screen flex flex-row">
-      <div className="basis-1/2 min-h-screen  p-5">
+      <div className="hidden sm:block sm:basis-1/2 min-h-screen  p-5">
         <img
           className="w-full h-full object-cover rounded-4xl"
           src="/consultancy2.png"
           alt="Login Image"
         />
       </div>
-      <div className="basis-1/2 min-h-screen flex flex-col justify-center items-center p-50 gap-8">
+      <div className="w-full sm:basis-1/2 min-h-screen flex flex-col justify-center items-center p-20 sm:p-50 gap-8">
         <h1 className="text-3xl font-bold">Login to your Account</h1>
         <form className="flex flex-col gap-7 w-full" onSubmit={handleSubmit}>
           <div className="flex items-center w-full justify-between">

@@ -55,17 +55,17 @@ export default function DoctorDashboard() {
   return (
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
       <header className="w-full p-4 rounded-xl text-gray-700 flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Doctor's Dashboard</h1>
+        <h1 className="text-lg sm:text-2xl font-bold">Doctor's Dashboard</h1>
         <button
-          className="bg-gray-700 px-4 py-2 rounded text-white hover:bg-gray-600 cursor-pointer"
+          className="bg-gray-700 px-4 py-2 rounded text-white hover:bg-gray-600 cursor-pointer text-sm sm:text-md"
           onClick={() => router.push("/login")}
         >
           Log Out
         </button>
       </header>
-      <div className="w-full h-full flex flex-row gap-3">
+      <div className="w-full h-full flex flex-col sm:flex-row gap-3">
         <div className="flex-1 flex flex-col bg-gray-100 rounded-2xl border border-gray-300 p-5 gap-5">
-          <h1 className="text-lg font-bold text-gray-700">Filter</h1>
+          <h1 className="text-md sm:text-lg font-bold text-gray-700">Filter</h1>
           <label className="font-semibold text-gray-700">
             Filter by Status:
           </label>
@@ -117,7 +117,9 @@ export default function DoctorDashboard() {
           </button>
         </div>
         <div className="flex-3 border border-gray-300 rounded-2xl p-5 flex flex-col gap-3">
-          <h1 className="text-2xl font-bold">{status} Appointments</h1>
+          <h1 className="text-lg sm:text-2xl font-bold">
+            {status} Appointments
+          </h1>
           <div className="flex-1 flex flex-col overflow-y-auto gap-2">
             {appointments.map((item: any) => (
               <div

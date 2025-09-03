@@ -129,7 +129,11 @@ export default function PatientDashboard() {
         </div>
         <button
           className="bg-gray-700 px-4 py-2 rounded text-white hover:bg-gray-600 cursor-pointer text-sm sm:text-md"
-          onClick={() => router.push("/login")}
+          onClick={() => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("userRole");
+            router.push("/login");
+          }}
         >
           Log Out
         </button>

@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosInstance";
+import { set } from "zod";
 
 export default function PatientDashboard() {
   const router = useRouter();
@@ -14,8 +15,11 @@ export default function PatientDashboard() {
   const [limit, setLimit] = useState(10);
   const [specialization, setSpecialization] = useState("");
   const [doctorId, setDoctorId] = useState("");
+  const [notification, setNotification] = useState("");
+  const [errorNotification, setErrorNotification] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const checkAuth = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       router.push("/login");
@@ -24,27 +28,16 @@ export default function PatientDashboard() {
     if (userRole === "DOCTOR") {
       router.push("/doctor/dashboard");
     }
-  }, []);
-
-  const handleConfirmAppointment = () => {
-    axiosInstance
-      .post("/appointments", {
-        doctorId,
-        date,
-      })
-      .then((res) => {
-        console.log(res.data.message);
-      });
   };
 
-  useEffect(() => {
+  const getSpecializations = () => {
     axiosInstance.get("/specializations").then((res) => {
       setSpecializations(res.data.data || []);
       console.log(res.data.message);
     });
-  }, []);
+  };
 
-  useEffect(() => {
+  const getDoctors = () => {
     axiosInstance
       .get(
         `/doctors?page=${page}&limit=${limit}&search=${name}&specialization=${specialization}`
@@ -52,13 +45,67 @@ export default function PatientDashboard() {
       .then((res) => {
         setDoctors(res.data.data || []);
         console.log(res.data.message);
+        setLoading(false);
       })
       .catch((error) => {
         if (error.response.status === 403) {
           router.push("/login");
         }
       });
+  };
+
+  const handleConfirmAppointment = () => {
+    console.log(doctorId, date);
+    axiosInstance
+      .post("/appointments", {
+        doctorId,
+        date,
+      })
+      .then((res) => {
+        console.log(res.data.message, res.status);
+        if (res && res.status === 201) {
+          setNotification("Appointment confirmed successfully.");
+        }
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 409) {
+          setErrorNotification(
+            "Doctor is not available for the selected date."
+          );
+        }
+      });
+  };
+
+  useEffect(() => {
+    getDoctors();
   }, [page, limit, name, specialization]);
+
+  useEffect(() => {
+    getSpecializations();
+    checkAuth();
+  }, []);
+
+  useEffect(() => {
+    if (errorNotification) {
+      const timer = setTimeout(() => setErrorNotification(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorNotification]);
+
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => setNotification(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <p className="text-gray-700">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
@@ -205,6 +252,16 @@ export default function PatientDashboard() {
               </button>
             </div>
           </div>
+        </div>
+      )}
+      {notification && (
+        <div className="fixed top-4 bg-blue-500 text-white px-4 py-2 rounded shadow z-50 animate-pulse">
+          {notification}
+        </div>
+      )}
+      {errorNotification && (
+        <div className="fixed top-4 bg-red-500 text-white px-4 py-2 rounded shadow z-50 animate-pulse">
+          {errorNotification}
         </div>
       )}
     </div>

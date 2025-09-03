@@ -126,7 +126,7 @@ export default function Login() {
           )}
           <button
             type="submit"
-            className="bg-gray-900 text-white rounded-lg px-4 py-2 hover:bg-gray-700"
+            className="bg-gray-900 text-white rounded-lg px-4 py-2 hover:bg-gray-700 cursor-pointer"
           >
             Login
           </button>
@@ -134,7 +134,7 @@ export default function Login() {
         <div className="flex flex-row gap-2 items-center">
           <p className="text-lg">Don't have an account?</p>
           <button
-            className="text-blue-500 hover:cursor-pointer"
+            className="text-blue-500 hover:cursor-pointer cursor-pointer"
             onClick={() => router.push("/register")}
           >
             Register

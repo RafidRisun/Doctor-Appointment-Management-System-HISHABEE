@@ -218,7 +218,7 @@ export default function Login() {
           />
           <button
             type="submit"
-            className="bg-gray-900 text-white rounded-lg px-4 py-2 hover:bg-gray-700"
+            className="bg-gray-900 text-white rounded-lg px-4 py-2 hover:bg-gray-700 cursor-pointer"
           >
             Register
           </button>

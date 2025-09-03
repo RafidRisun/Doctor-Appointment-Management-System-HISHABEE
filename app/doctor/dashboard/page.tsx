@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axiosInstance from "@/utils/axiosInstance";
+import { set } from "zod";
 
 export default function DoctorDashboard() {
   const router = useRouter();
@@ -13,8 +14,27 @@ export default function DoctorDashboard() {
   const [modalAppointmentId, setModalAppointmentId] = useState("");
   const [modalNewStatus, setModalNewStatus] = useState("");
   const [flag, setFlag] = useState(1);
+  const [notification, setNotification] = useState("");
+  const [errorNotification, setErrorNotification] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchAppointments = () => {
+    axiosInstance
+      .get(`/appointments/doctor?status=${status}&date=${date}&page=${page}`)
+      .then((res) => {
+        console.log(res.data.message);
+        setAppointments(res.data.data);
+        //setAppointments(mockAppointments);
+        setLoading(false);
+      })
+      .catch((error) => {
+        if (error.response.status === 403) {
+          router.push("/login");
+        }
+      });
+  };
+
+  const checkAuth = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       router.push("/login");
@@ -23,20 +43,7 @@ export default function DoctorDashboard() {
     if (userRole === "PATIENT") {
       router.push("/patient/dashboard");
     }
-
-    axiosInstance
-      .get(`/appointments/doctor?status=${status}&date=${date}&page=${page}`)
-      .then((res) => {
-        console.log(res.data.message);
-        setAppointments(res.data.data);
-        //setAppointments(mockAppointments);
-      })
-      .catch((error) => {
-        if (error.response.status === 403) {
-          router.push("/login");
-        }
-      });
-  }, [status, page, flag]);
+  };
 
   const handleSetStatus = (appointmentId: string, newStatus: string) => {
     axiosInstance
@@ -46,11 +53,49 @@ export default function DoctorDashboard() {
       })
       .then((res) => {
         console.log(res.data.message);
+        setNotification("Appointment status updated successfully");
         setModal(false);
         setModalAppointmentId("");
         setFlag(flag + 1);
+      })
+      .catch((error) => {
+        if (error.response.status === 403) {
+          router.push("/login");
+        } else {
+          setErrorNotification("Failed to update appointment status");
+        }
       });
   };
+
+  useEffect(() => {
+    fetchAppointments();
+  }, [status, page, date, flag]);
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => setNotification(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification]);
+
+  useEffect(() => {
+    if (errorNotification) {
+      const timer = setTimeout(() => setErrorNotification(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorNotification]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <p className="text-gray-700">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
@@ -78,19 +123,19 @@ export default function DoctorDashboard() {
             </button>
             <button
               className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 cursor-pointer"
-              onClick={() => setStatus("Pending")}
+              onClick={() => setStatus("PENDING")}
             >
               Pending
             </button>
             <button
               className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400 cursor-pointer"
-              onClick={() => setStatus("Cancelled")}
+              onClick={() => setStatus("CANCELLED")}
             >
               Cancelled
             </button>
             <button
               className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 cursor-pointer"
-              onClick={() => setStatus("Completed")}
+              onClick={() => setStatus("COMPLETED")}
             >
               Completed
             </button>
@@ -207,6 +252,16 @@ export default function DoctorDashboard() {
               </button>
             </div>
           </div>
+        </div>
+      )}
+      {notification && (
+        <div className="fixed top-4 bg-blue-500 text-white px-4 py-2 rounded shadow z-50 animate-pulse">
+          {notification}
+        </div>
+      )}
+      {errorNotification && (
+        <div className="fixed top-4 bg-red-500 text-white px-4 py-2 rounded shadow z-50 animate-pulse">
+          {errorNotification}
         </div>
       )}
     </div>

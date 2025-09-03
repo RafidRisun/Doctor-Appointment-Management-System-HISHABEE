@@ -4,6 +4,14 @@ An advanced, full-stack web application for managing doctor appointments, built 
 
 ---
 
+## 🟢 Demo
+
+👉 **Live on Vercel:** [doctor-appointment-management-syste-virid.vercel.app](https://doctor-appointment-management-syste-virid.vercel.app/)
+
+---
+
+---
+
 ## 🚀 Features
 
 - Patient and Doctor authentication & role-based dashboards

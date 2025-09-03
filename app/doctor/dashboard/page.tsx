@@ -189,50 +189,59 @@ export default function DoctorDashboard() {
           <h1 className="text-lg sm:text-2xl font-bold">
             {status} Appointments
           </h1>
-          <div className="flex-1 flex flex-col overflow-y-auto gap-2">
-            {appointments.map((item: Appointment) => (
-              <div
-                key={item.id}
-                className="flex flex-row justify-between items-center border-b border-gray-300 p-3"
-              >
-                <p className="text-lg font-bold">{item.patient.name}</p>
-                <p className="text-md">{item.date}</p>
-                <p className="text-md">{item.status}</p>
-                <div className="flex gap-2">
-                  {/* Only allow status change if appointment is pending */}
-                  <button
-                    disabled={item.status !== "PENDING"}
-                    className={`px-4 py-2 rounded ${
-                      item.status === "PENDING"
-                        ? "bg-red-500 text-white hover:bg-red-400 cursor-pointer"
-                        : "bg-red-200 text-white cursor-not-allowed"
-                    }`}
-                    onClick={() => {
-                      setModal(true);
-                      setModalAppointmentId(item.id);
-                      setModalNewStatus("CANCELLED");
-                    }}
-                  >
-                    Mark as Cancelled
-                  </button>
-                  <button
-                    disabled={item.status !== "PENDING"}
-                    className={`px-4 py-2 rounded ${
-                      item.status === "PENDING"
-                        ? "bg-green-500 text-white hover:bg-green-400 cursor-pointer"
-                        : "bg-green-200 text-white cursor-not-allowed"
-                    }`}
-                    onClick={() => {
-                      setModal(true);
-                      setModalAppointmentId(item.id);
-                      setModalNewStatus("COMPLETED");
-                    }}
-                  >
-                    Mark as Completed
-                  </button>
-                </div>
-              </div>
-            ))}
+          <div className="flex-1 overflow-y-auto">
+            <table className="w-full table-fixed">
+              <tbody>
+                {appointments.map((item: Appointment) => (
+                  <tr key={item.id} className="border-b border-gray-300">
+                    <td className="w-1/4 p-3 align-middle text-left">
+                      <p className="text-lg font-bold">{item.patient.name}</p>
+                    </td>
+                    <td className="w-1/4 p-3 align-middle text-center">
+                      <p className="text-md">{item.date}</p>
+                    </td>
+                    <td className="w-1/4 p-3 align-middle text-center">
+                      <p className="text-md">{item.status}</p>
+                    </td>
+                    <td className="w-1/4 p-3 align-middle text-right">
+                      <div className="flex gap-2 justify-end">
+                        {/* Only allow status change if appointment is pending */}
+                        <button
+                          disabled={item.status !== "PENDING"}
+                          className={`px-4 py-2 rounded ${
+                            item.status === "PENDING"
+                              ? "bg-red-500 text-white hover:bg-red-400 cursor-pointer"
+                              : "bg-red-200 text-white cursor-not-allowed"
+                          }`}
+                          onClick={() => {
+                            setModal(true);
+                            setModalAppointmentId(item.id);
+                            setModalNewStatus("CANCELLED");
+                          }}
+                        >
+                          Mark as Cancelled
+                        </button>
+                        <button
+                          disabled={item.status !== "PENDING"}
+                          className={`px-4 py-2 rounded ${
+                            item.status === "PENDING"
+                              ? "bg-green-500 text-white hover:bg-green-400 cursor-pointer"
+                              : "bg-green-200 text-white cursor-not-allowed"
+                          }`}
+                          onClick={() => {
+                            setModal(true);
+                            setModalAppointmentId(item.id);
+                            setModalNewStatus("COMPLETED");
+                          }}
+                        >
+                          Mark as Completed
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
           {/* Pagination */}
           <div className="flex flex-row gap-5 justify-between">

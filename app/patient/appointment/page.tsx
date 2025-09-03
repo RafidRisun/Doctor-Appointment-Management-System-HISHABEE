@@ -171,34 +171,41 @@ export default function PatientDashboard() {
               {status} Appointments
             </h1>
             <div className="flex-1 overflow-y-auto">
-              {appointments.map((item: Appointment) => (
-                <div
-                  key={item.id}
-                  className="flex flex-row justify-between items-center border-b border-gray-300 p-3"
-                >
-                  <p className="text-lg font-bold">{item.doctor.name}</p>
-                  <p className="text-md">
-                    {item.status === "PENDING"
-                      ? item.createdAt
-                      : item.updatedAt}
-                  </p>
-                  {/* Only allow cancel if appointment is pending */}
-                  <button
-                    onClick={() => {
-                      setAppointmentId(item.id);
-                      setModal(true);
-                    }}
-                    disabled={item.status !== "PENDING"}
-                    className={`px-4 py-2 rounded  ${
-                      item.status === "PENDING"
-                        ? "bg-red-500 text-white hover:bg-red-400 cursor-pointer"
-                        : "bg-gray-300 text-gray-700 cursor-not-allowed opacity-60"
-                    }`}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              ))}
+              <table className="w-full table-fixed">
+                <tbody>
+                  {appointments.map((item: Appointment) => (
+                    <tr key={item.id} className="border-b border-gray-300">
+                      <td className="w-1/3 p-3 align-middle text-left">
+                        <p className="text-lg font-bold">{item.doctor.name}</p>
+                      </td>
+                      <td className="w-1/3 p-3 align-middle text-center">
+                        <p className="text-md">
+                          {item.status === "PENDING"
+                            ? item.createdAt
+                            : item.updatedAt}
+                        </p>
+                      </td>
+                      <td className="w-1/3 p-3 align-middle text-right">
+                        {/* Only allow cancel if appointment is pending */}
+                        <button
+                          onClick={() => {
+                            setAppointmentId(item.id);
+                            setModal(true);
+                          }}
+                          disabled={item.status !== "PENDING"}
+                          className={`px-4 py-2 rounded  ${
+                            item.status === "PENDING"
+                              ? "bg-red-500 text-white hover:bg-red-400 cursor-pointer"
+                              : "bg-gray-300 text-gray-700 cursor-not-allowed opacity-60"
+                          }`}
+                        >
+                          Cancel
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
           {/* Pagination */}
@@ -223,7 +230,6 @@ export default function PatientDashboard() {
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-7 shadow-xl w-full max-w-md border border-gray-300 flex flex-col gap-5">
             <h2 className="text-xl font-bold">Cancel Appointment</h2>
-
             <div className="flex flex-row justify-between gap-2">
               <button
                 className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer"

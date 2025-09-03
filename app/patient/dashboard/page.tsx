@@ -18,6 +18,7 @@ export default function PatientDashboard() {
   const [errorNotification, setErrorNotification] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // Doctor type definition for API data
   type Doctor = {
     id: string;
     name: string;
@@ -25,6 +26,7 @@ export default function PatientDashboard() {
     photo_url: string;
   };
 
+  // Redirect if not authenticated or wrong role
   const checkAuth = () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -36,6 +38,7 @@ export default function PatientDashboard() {
     }
   };
 
+  // Fetch all available specializations
   const getSpecializations = () => {
     axiosInstance.get("/specializations").then((res) => {
       setSpecializations(res.data.data || []);
@@ -43,6 +46,7 @@ export default function PatientDashboard() {
     });
   };
 
+  // Fetch doctors with filters (pagination, search, specialization)
   const getDoctors = () => {
     axiosInstance
       .get(
@@ -60,15 +64,14 @@ export default function PatientDashboard() {
       });
   };
 
+  // Book an appointment with selected doctor and date
   const handleConfirmAppointment = () => {
-    console.log(doctorId, date);
     axiosInstance
       .post("/appointments", {
         doctorId,
         date,
       })
       .then((res) => {
-        console.log(res.data.message, res.status);
         if (res && res.status === 201) {
           setNotification("Appointment confirmed successfully.");
         }
@@ -82,15 +85,18 @@ export default function PatientDashboard() {
       });
   };
 
+  // Fetch doctors when filters or pagination change
   useEffect(() => {
     getDoctors();
   }, [page, limit, name, specialization]);
 
+  // Check authentication and fetch specializations on mount
   useEffect(() => {
     getSpecializations();
     checkAuth();
   }, []);
 
+  // Auto-hide error notification after 5s
   useEffect(() => {
     if (errorNotification) {
       const timer = setTimeout(() => setErrorNotification(""), 5000);
@@ -98,6 +104,7 @@ export default function PatientDashboard() {
     }
   }, [errorNotification]);
 
+  // Auto-hide notification after 5s
   useEffect(() => {
     if (notification) {
       const timer = setTimeout(() => setNotification(""), 5000);
@@ -105,6 +112,7 @@ export default function PatientDashboard() {
     }
   }, [notification]);
 
+  // Show loading spinner while fetching data
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -113,8 +121,10 @@ export default function PatientDashboard() {
     );
   }
 
+  // Main dashboard UI
   return (
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
+      {/* Header with appointments and logout */}
       <header className="w-full p-4 rounded-xl text-gray-700 flex justify-between items-center">
         <div className="flex gap-5 sm:gap-20 items-end">
           <h1 className="text-lg sm:text-2xl font-bold cursor-default">
@@ -139,6 +149,7 @@ export default function PatientDashboard() {
         </button>
       </header>
       <div className="w-full h-full flex flex-col sm:flex-row gap-3">
+        {/* Filter sidebar */}
         <div className="flex-1 flex flex-col bg-gray-100 rounded-2xl border border-gray-300 p-5 gap-5">
           <h1 className="text-lg font-bold text-gray-700 cursor-default">
             Filter
@@ -178,6 +189,7 @@ export default function PatientDashboard() {
             Clear Filter
           </button>
         </div>
+        {/* Doctors list */}
         <div className="flex-3 border border-gray-300 rounded-2xl p-5 flex flex-col gap-3">
           <h1 className="text-lg font-bold text-gray-700">
             Available Doctors & Specialists
@@ -211,6 +223,7 @@ export default function PatientDashboard() {
               </div>
             ))}
           </div>
+          {/* Pagination */}
           <div className="flex flex-row gap-5 justify-between">
             <button
               className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
@@ -227,6 +240,7 @@ export default function PatientDashboard() {
           </div>
         </div>
       </div>
+      {/* Book appointment modal */}
       {modal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-7 shadow-xl w-full max-w-md border border-gray-300 flex flex-col gap-5">
@@ -254,7 +268,6 @@ export default function PatientDashboard() {
               <button
                 className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 cursor-pointer"
                 onClick={() => {
-                  // Handle booking appointment
                   setModal(false);
                 }}
               >
@@ -264,6 +277,7 @@ export default function PatientDashboard() {
           </div>
         </div>
       )}
+      {/* Notifications */}
       {notification && (
         <div className="fixed top-4 bg-blue-500 text-white px-4 py-2 rounded shadow z-50 animate-pulse">
           {notification}

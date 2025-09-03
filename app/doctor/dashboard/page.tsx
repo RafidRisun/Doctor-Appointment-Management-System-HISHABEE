@@ -17,6 +17,7 @@ export default function DoctorDashboard() {
   const [errorNotification, setErrorNotification] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // Appointment type definition for API data
   type Appointment = {
     id: string;
     patient: { name: string };
@@ -24,13 +25,13 @@ export default function DoctorDashboard() {
     status: string;
   };
 
+  // Fetch appointments for the doctor with filters
   const fetchAppointments = () => {
     axiosInstance
       .get(`/appointments/doctor?status=${status}&date=${date}&page=${page}`)
       .then((res) => {
         console.log(res.data.message);
         setAppointments(res.data.data);
-        //setAppointments(mockAppointments);
         setLoading(false);
       })
       .catch((error) => {
@@ -40,6 +41,7 @@ export default function DoctorDashboard() {
       });
   };
 
+  // Redirect if not authenticated or wrong role
   const checkAuth = () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -51,6 +53,7 @@ export default function DoctorDashboard() {
     }
   };
 
+  // Update appointment status (Completed/Cancelled)
   const handleSetStatus = (appointmentId: string, newStatus: string) => {
     axiosInstance
       .patch("/appointments/update-status", {
@@ -62,7 +65,7 @@ export default function DoctorDashboard() {
         setNotification("Appointment status updated successfully");
         setModal(false);
         setModalAppointmentId("");
-        setFlag(flag + 1);
+        setFlag(flag + 1); // Refetch appointments
       })
       .catch((error) => {
         if (error.response.status === 403) {
@@ -73,14 +76,17 @@ export default function DoctorDashboard() {
       });
   };
 
+  // Fetch appointments when filters or status change
   useEffect(() => {
     fetchAppointments();
   }, [status, page, date, flag]);
 
+  // Check authentication on mount
   useEffect(() => {
     checkAuth();
   }, []);
 
+  // Auto-hide notification after 5s
   useEffect(() => {
     if (notification) {
       const timer = setTimeout(() => setNotification(""), 5000);
@@ -88,6 +94,7 @@ export default function DoctorDashboard() {
     }
   }, [notification]);
 
+  // Auto-hide error notification after 5s
   useEffect(() => {
     if (errorNotification) {
       const timer = setTimeout(() => setErrorNotification(""), 5000);
@@ -95,6 +102,7 @@ export default function DoctorDashboard() {
     }
   }, [errorNotification]);
 
+  // Show loading while fetching data
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -103,8 +111,10 @@ export default function DoctorDashboard() {
     );
   }
 
+  // Main dashboard UI
   return (
     <div className="flex flex-col h-screen max-h-screen min-h-screen justify-start items-center p-3 gap-3 box-border">
+      {/* Header with logout */}
       <header className="w-full p-4 rounded-xl text-gray-700 flex justify-between items-center">
         <h1 className="text-lg sm:text-2xl font-bold">
           Doctor&apos;s Dashboard
@@ -121,6 +131,7 @@ export default function DoctorDashboard() {
         </button>
       </header>
       <div className="w-full h-full flex flex-col sm:flex-row gap-3">
+        {/* Filter sidebar */}
         <div className="flex-1 flex flex-col bg-gray-100 rounded-2xl border border-gray-300 p-5 gap-5">
           <h1 className="text-md sm:text-lg font-bold text-gray-700">Filter</h1>
           <label className="font-semibold text-gray-700">
@@ -173,6 +184,7 @@ export default function DoctorDashboard() {
             Clear Filter
           </button>
         </div>
+        {/* Appointments list */}
         <div className="flex-3 border border-gray-300 rounded-2xl p-5 flex flex-col gap-3">
           <h1 className="text-lg sm:text-2xl font-bold">
             {status} Appointments
@@ -187,6 +199,7 @@ export default function DoctorDashboard() {
                 <p className="text-md">{item.date}</p>
                 <p className="text-md">{item.status}</p>
                 <div className="flex gap-2">
+                  {/* Only allow status change if appointment is pending */}
                   <button
                     disabled={item.status !== "PENDING"}
                     className={`px-4 py-2 rounded ${
@@ -221,6 +234,7 @@ export default function DoctorDashboard() {
               </div>
             ))}
           </div>
+          {/* Pagination */}
           <div className="flex flex-row gap-5 justify-between">
             <button
               className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
@@ -237,6 +251,7 @@ export default function DoctorDashboard() {
           </div>
         </div>
       </div>
+      {/* Status update modal */}
       {modal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-7 shadow-xl w-full max-w-md border border-gray-300 flex flex-col gap-5">
@@ -266,6 +281,7 @@ export default function DoctorDashboard() {
           </div>
         </div>
       )}
+      {/* Notifications */}
       {notification && (
         <div className="fixed top-4 bg-blue-500 text-white px-4 py-2 rounded shadow z-50 animate-pulse">
           {notification}

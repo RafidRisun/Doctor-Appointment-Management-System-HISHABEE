@@ -20,50 +20,59 @@ export default function Header({
   const router = useRouter();
   return (
     <header className="w-full p-4 rounded-xl text-gray-700 flex justify-between items-center sticky top-0 bg-white border-b border-gray-300 z-50">
-      <div className="hidden sm:flex gap-2 items-center">
-        {userType === "DOCTOR" && (
-          <>
-            <FaUserDoctor className="text-lg sm:text-2xl" />
-            <h1 className="text-md sm:text-xl">Welcome Doctor {userName}</h1>
-          </>
-        )}
+      <div className="flex gap-10 items-center">
+        <div className="hidden sm:flex gap-2 items-center">
+          {userType === "DOCTOR" && (
+            <>
+              <FaUserDoctor className="text-lg sm:text-2xl" />
+              <h1 className="text-md sm:text-xl">Welcome Doctor {userName}</h1>
+            </>
+          )}
+          {userType === "PATIENT" && (
+            <>
+              <FaHospitalUser className="text-lg sm:text-2xl" />
+              <h1 className="text-md sm:text-xl">Welcome {userName}</h1>
+            </>
+          )}
+        </div>
         {userType === "PATIENT" && (
-          <>
-            <FaHospitalUser className="text-lg sm:text-2xl" />
-            <h1 className="text-md sm:text-xl">Welcome {userName}</h1>
-          </>
+          <div className="flex gap-2 sm:gap-2">
+            <button
+              className={`flex gap-2 items-center cursor-pointer text-xs sm:text-lg ${
+                currentPage === "dashboard" ? "text-gray-500" : "text-gray-700"
+              }`}
+              onClick={() => router.push("/patient/dashboard")}
+            >
+              <MdDashboard
+                className={`text-sm sm:text-lg ${
+                  currentPage === "dashboard"
+                    ? "text-gray-500"
+                    : "text-gray-700"
+                }`}
+              />
+              Dashboard
+            </button>
+            <button
+              className={`flex gap-2 items-center cursor-pointer text-xs sm:text-lg ${
+                currentPage === "appointments"
+                  ? "text-gray-500"
+                  : "text-gray-700"
+              }`}
+              onClick={() => router.push("/patient/appointment")}
+            >
+              <FaClipboardList
+                className={`text-sm sm:text-lg ${
+                  currentPage === "appointments"
+                    ? "text-gray-500"
+                    : "text-gray-700"
+                }`}
+              />
+              Appointments
+            </button>
+          </div>
         )}
       </div>
-      {userType === "PATIENT" && (
-        <div className="flex gap-1 sm:gap-2">
-          <button
-            className={`flex gap-2 items-center ${
-              currentPage === "dashboard" ? "bg-gray-400" : "bg-gray-200"
-            } px-4 py-2 rounded hover:bg-gray-400 cursor-pointer text-xs sm:text-lg ${
-              currentPage === "dashboard" ? "text-white" : "text-gray-700"
-            }`}
-            onClick={() => router.push("/patient/dashboard")}
-          >
-            <MdDashboard
-              className={`text-sm sm:text-lg ${
-                currentPage === "dashboard" ? "text-white" : "text-gray-700"
-              }`}
-            />
-            Dashboard
-          </button>
-          <button
-            className={`flex gap-2 items-center ${
-              currentPage === "appointments" ? "bg-gray-400" : "bg-gray-200"
-            } px-4 py-2 rounded hover:bg-gray-400 cursor-pointer text-xs sm:text-lg ${
-              currentPage === "appointments" ? "text-white" : "text-gray-700"
-            }`}
-            onClick={() => router.push("/patient/appointment")}
-          >
-            <FaClipboardList className="text-sm sm:text-lg" />
-            Appointments
-          </button>
-        </div>
-      )}
+
       {userType === "DOCTOR" && (
         <h1 className="text-md sm:text-lg font-bold">
           Doctor&apos;s Dashboard

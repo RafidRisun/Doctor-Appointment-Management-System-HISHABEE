@@ -36,18 +36,18 @@ export default function Header({
           )}
         </div>
         {userType === "PATIENT" && (
-          <div className="flex gap-2 sm:gap-2">
+          <div className="flex gap-2 sm:gap-10">
             <button
               className={`flex gap-2 items-center cursor-pointer text-xs sm:text-lg ${
-                currentPage === "dashboard" ? "text-gray-500" : "text-gray-700"
+                currentPage === "dashboard" ? "text-gray-700" : "text-gray-500"
               }`}
               onClick={() => router.push("/patient/dashboard")}
             >
               <MdDashboard
                 className={`text-sm sm:text-lg ${
                   currentPage === "dashboard"
-                    ? "text-gray-500"
-                    : "text-gray-700"
+                    ? "text-gray-700"
+                    : "text-gray-500"
                 }`}
               />
               Dashboard
@@ -55,16 +55,16 @@ export default function Header({
             <button
               className={`flex gap-2 items-center cursor-pointer text-xs sm:text-lg ${
                 currentPage === "appointments"
-                  ? "text-gray-500"
-                  : "text-gray-700"
+                  ? "text-gray-700"
+                  : "text-gray-500"
               }`}
               onClick={() => router.push("/patient/appointment")}
             >
               <FaClipboardList
                 className={`text-sm sm:text-lg ${
                   currentPage === "appointments"
-                    ? "text-gray-500"
-                    : "text-gray-700"
+                    ? "text-gray-700"
+                    : "text-gray-500"
                 }`}
               />
               Appointments

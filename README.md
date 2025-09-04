@@ -47,6 +47,9 @@ doctor-apointment-mgt-system/
 │   │   └── appointment/   # Patient appointment
 │   └── doctor/
 │       └── dashboard/     # Doctor dashboard
+│   ├── components/
+│   │   └── header.tsx     # Header component
+│   │   └── pagination.tsx # Pagination Component
 ├── public/                # Static assets
 ├── utils/                 # Axios instance, helpers
 ├── package.json           # Project metadata

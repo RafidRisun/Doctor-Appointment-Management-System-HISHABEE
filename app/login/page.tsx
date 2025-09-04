@@ -75,7 +75,7 @@ export default function Login() {
         />
       </div>
       {/* Login form section */}
-      <div className="w-full sm:basis-1/2 min-h-screen flex flex-col justify-center items-center p-20 sm:p-50 gap-8">
+      <div className="w-full sm:basis-1/2 min-h-screen flex flex-col justify-center items-center p-10 sm:p-50 gap-8">
         {role === "DOCTOR" && (
           <h1 className="text-3xl font-bold">Login to your Doctor Account</h1>
         )}

@@ -204,15 +204,15 @@ export default function PatientDashboard() {
                   alt={doctor.name}
                 />
                 <div className="p-2 flex flex-col items-start gap-1 flex-1 min-h-0">
-                  <h1 className="text-lg font-bold text-gray-700 w-full truncate break-words">
+                  <h1 className="text-md sm:text-lg font-bold text-gray-700 w-full truncate break-words">
                     {doctor.name}
                   </h1>
-                  <p className="text-gray-600 w-full truncate break-words">
+                  <p className="text-gray-600 w-full truncate break-words text-sm sm:text-md">
                     {doctor.specialization}
                   </p>
                 </div>
                 <button
-                  className="bg-gray-700 text-white text-sm sm:text-md px-4 py-2 rounded-lg hover:bg-gray-600 cursor-pointer flex-shrink-0"
+                  className="bg-gray-700 text-white text-xs sm:text-md px-4 py-2 rounded-lg hover:bg-gray-600 cursor-pointer flex-shrink-0"
                   onClick={() => {
                     setModal(true);
                     setDoctorId(doctor.id);

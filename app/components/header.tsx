@@ -19,7 +19,7 @@ export default function Header({
 }: DoctorHeaderProps) {
   const router = useRouter();
   return (
-    <header className="w-full p-4 rounded-xl text-gray-700 flex justify-between items-center sticky top-0 bg-white border-b border-gray-300">
+    <header className="w-full p-4 rounded-xl text-gray-700 flex justify-between items-center sticky top-0 bg-white border-b border-gray-300 z-50">
       <div className="hidden sm:flex gap-2 items-center">
         {userType === "DOCTOR" && (
           <>

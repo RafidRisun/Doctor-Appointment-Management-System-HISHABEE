@@ -128,25 +128,25 @@ export default function PatientDashboard() {
         <div className="flex-1 flex flex-col bg-gray-100 rounded-2xl border border-gray-300 p-5 gap-5">
           <div className="flex flex-row justify-between gap-1 sm:gap-3">
             <button
-              className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 cursor-pointer text-xs sm:text-md"
+              className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 cursor-pointer text-xs sm:text-lg"
               onClick={() => setStatus("")}
             >
               All
             </button>
             <button
-              className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 cursor-pointer text-xs sm:text-md"
+              className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 cursor-pointer text-xs sm:text-lg"
               onClick={() => setStatus("PENDING")}
             >
               Pending
             </button>
             <button
-              className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400 cursor-pointer text-xs sm:text-md"
+              className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400 cursor-pointer text-xs sm:text-lg"
               onClick={() => setStatus("CANCELLED")}
             >
               Cancelled
             </button>
             <button
-              className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 cursor-pointer text-xs sm:text-md"
+              className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 cursor-pointer text-xs sm:text-lg"
               onClick={() => setStatus("COMPLETED")}
             >
               Completed

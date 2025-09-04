@@ -186,24 +186,27 @@ export default function PatientDashboard() {
             Available Doctors & Specialists
           </h1>
           <div className="flex-1 flex flex-wrap gap-5 overflow-y-auto">
+            {/* Doctors Card */}
             {doctors.map((doctor: Doctor) => (
               <div
                 key={doctor.id}
-                className="flex flex-col w-60 h-80 bg-gray-100 rounded-xl border border-gray-300 p-2 shadow-md gap-2"
+                className="flex flex-col w-60 h-80 bg-gray-100 rounded-xl border border-gray-300 p-2 shadow-md gap-2 overflow-hidden"
               >
                 <img
                   src={doctor.photo_url || "/doctor_default.jpg"}
-                  className="w-full h-7/12 min-h-7/12 max-h-7/12 object-cover rounded-lg"
+                  className="w-full h-7/12 min-h-7/12 max-h-7/12 object-cover rounded-lg flex-shrink-0"
                   alt={doctor.name}
                 />
-                <div className="p-2 flex flex-col items-start gap-1">
-                  <h1 className="text-lg font-bold text-gray-700">
+                <div className="p-2 flex flex-col items-start gap-1 flex-1 min-h-0">
+                  <h1 className="text-lg font-bold text-gray-700 w-full truncate break-words">
                     {doctor.name}
                   </h1>
-                  <p className="text-gray-600">{doctor.specialization}</p>
+                  <p className="text-gray-600 w-full truncate break-words">
+                    {doctor.specialization}
+                  </p>
                 </div>
                 <button
-                  className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600 cursor-pointer"
+                  className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600 cursor-pointer flex-shrink-0"
                   onClick={() => {
                     setModal(true);
                     setDoctorId(doctor.id);

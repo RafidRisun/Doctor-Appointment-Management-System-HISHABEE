@@ -251,13 +251,15 @@ export default function DoctorDashboard() {
       {modal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-7 shadow-xl w-full max-w-md border border-gray-300 flex flex-col gap-5">
-            <h2 className="text-xl font-bold">Confirm {modalNewStatus}?</h2>
+            <h2 className="text-lg sm:text-xl font-bold">
+              Confirm {modalNewStatus}?
+            </h2>
             <p>
               Are you sure you want to change the status of this appointment?
             </p>
             <div className="flex flex-row justify-between gap-2">
               <button
-                className={`w-full ${
+                className={`w-full text-sm sm:text-md ${
                   modalNewStatus === "CANCELLED" ? "bg-red-500" : "bg-green-500"
                 } text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer`}
                 onClick={() => {
@@ -268,7 +270,7 @@ export default function DoctorDashboard() {
                 Confirm
               </button>
               <button
-                className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 cursor-pointer"
+                className="w-full text-sm sm:text-md bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 cursor-pointer"
                 onClick={() => setModal(false)}
               >
                 Cancel

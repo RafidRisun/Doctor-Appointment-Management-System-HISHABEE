@@ -36,7 +36,7 @@ export default function Header({
           )}
         </div>
         {userType === "PATIENT" && (
-          <div className="flex gap-2 sm:gap-2">
+          <div className="flex gap-2 sm:gap-10">
             <button
               className={`flex gap-2 items-center cursor-pointer text-xs sm:text-lg ${
                 currentPage === "dashboard" ? "text-gray-500" : "text-gray-700"

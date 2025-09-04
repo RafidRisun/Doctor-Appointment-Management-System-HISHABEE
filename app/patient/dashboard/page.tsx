@@ -137,7 +137,7 @@ export default function PatientDashboard() {
       />
       <div className="w-full h-full flex flex-col sm:flex-row gap-3">
         {/* Filter sidebar */}
-        <div className="flex-1 flex flex-col bg-gray-100 rounded-2xl border border-gray-300 p-5 gap-5">
+        <div className="flex-1 flex flex-col bg-gray-100 rounded-2xl border border-gray-300 p-5 gap-5 sticky top-20">
           <div className="flex flex-row gap-2 items-center">
             <h1 className="text-lg font-bold text-gray-700 cursor-default">
               Filter

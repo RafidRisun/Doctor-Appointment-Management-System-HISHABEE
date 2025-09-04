@@ -196,7 +196,7 @@ export default function PatientDashboard() {
             {doctors.map((doctor: Doctor) => (
               <div
                 key={doctor.id}
-                className="flex flex-col w-43 h-70 sm:w-60 sm:h-80 bg-gray-100 rounded-xl border border-gray-300 p-2 shadow-md gap-2 overflow-hidden"
+                className="flex flex-col w-40 h-70 sm:w-60 sm:h-80 bg-gray-100 rounded-xl border border-gray-300 p-2 shadow-md gap-2 overflow-hidden"
               >
                 <img
                   src={doctor.photo_url || "/doctor_default.jpg"}

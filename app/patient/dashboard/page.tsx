@@ -148,7 +148,10 @@ export default function PatientDashboard() {
           <input
             className="border border-gray-500 bg-white rounded p-2 w-full"
             placeholder="Search for Doctors"
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              setName(e.target.value);
+              setPage(1);
+            }}
           />
           <div>
             <p className="text-gray-700 cursor-default">
@@ -158,7 +161,10 @@ export default function PatientDashboard() {
               className="border border-gray-500 bg-white rounded p-2 w-full"
               name="specialization"
               value={specialization}
-              onChange={(e) => setSpecialization(e.target.value)}
+              onChange={(e) => {
+                setSpecialization(e.target.value);
+                setPage(1);
+              }}
             >
               <option className="cursor-pointer" value="">
                 All

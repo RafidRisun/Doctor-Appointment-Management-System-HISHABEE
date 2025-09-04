@@ -267,7 +267,7 @@ export default function Login() {
             className="text-blue-500 hover:cursor-pointer"
             onClick={() => router.push("/login")}
           >
-            Log In
+            Login
           </button>
         </div>
       </div>

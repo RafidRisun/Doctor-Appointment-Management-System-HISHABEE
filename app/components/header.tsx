@@ -35,17 +35,17 @@ export default function Header({
         )}
       </div>
       {userType === "PATIENT" && (
-        <div className="flex gap-2">
+        <div className="flex gap-1 sm:gap-2">
           <button
             className={`flex gap-2 items-center ${
               currentPage === "dashboard" ? "bg-gray-400" : "bg-gray-200"
-            } px-4 py-2 rounded hover:bg-gray-400 cursor-pointer text-md sm:text-lg ${
+            } px-4 py-2 rounded hover:bg-gray-400 cursor-pointer text-xs sm:text-lg ${
               currentPage === "dashboard" ? "text-white" : "text-gray-700"
             }`}
             onClick={() => router.push("/patient/dashboard")}
           >
             <MdDashboard
-              className={`text-md sm:text-lg ${
+              className={`text-sm sm:text-lg ${
                 currentPage === "dashboard" ? "text-white" : "text-gray-700"
               }`}
             />
@@ -54,12 +54,12 @@ export default function Header({
           <button
             className={`flex gap-2 items-center ${
               currentPage === "appointments" ? "bg-gray-400" : "bg-gray-200"
-            } px-4 py-2 rounded hover:bg-gray-400 cursor-pointer text-md sm:text-lg ${
+            } px-4 py-2 rounded hover:bg-gray-400 cursor-pointer text-xs sm:text-lg ${
               currentPage === "appointments" ? "text-white" : "text-gray-700"
             }`}
             onClick={() => router.push("/patient/appointment")}
           >
-            <FaClipboardList className="text-md sm:text-lg" />
+            <FaClipboardList className="text-sm sm:text-lg" />
             Appointments
           </button>
         </div>
@@ -70,7 +70,7 @@ export default function Header({
         </h1>
       )}
       <button
-        className="flex gap-2 items-center bg-gray-700 px-4 py-2 rounded text-white hover:bg-gray-600 cursor-pointer text-sm sm:text-md"
+        className="flex gap-2 items-center bg-gray-700 px-4 py-2 rounded text-white hover:bg-gray-600 cursor-pointer text-xs sm:text-md"
         onClick={() => {
           localStorage.removeItem("token");
           localStorage.removeItem("userRole");

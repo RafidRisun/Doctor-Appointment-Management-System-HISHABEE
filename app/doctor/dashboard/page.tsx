@@ -137,25 +137,25 @@ export default function DoctorDashboard() {
           </label>
           <div className="flex flex-row justify-between gap-1">
             <button
-              className="w-full bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 cursor-pointer"
+              className="w-full bg-gray-700 text-white text-sm sm:text-md px-4 py-2 rounded hover:bg-gray-600 cursor-pointer"
               onClick={() => setStatus("")}
             >
               All
             </button>
             <button
-              className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 cursor-pointer"
+              className="w-full bg-blue-500 text-white text-sm sm:text-md px-4 py-2 rounded hover:bg-blue-400 cursor-pointer"
               onClick={() => setStatus("PENDING")}
             >
               Pending
             </button>
             <button
-              className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400 cursor-pointer"
+              className="w-full bg-red-500 text-white text-sm sm:text-md px-4 py-2 rounded hover:bg-red-400 cursor-pointer"
               onClick={() => setStatus("CANCELLED")}
             >
               Cancelled
             </button>
             <button
-              className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 cursor-pointer"
+              className="w-full bg-green-500 text-white text-sm sm:text-md px-4 py-2 rounded hover:bg-green-400 cursor-pointer"
               onClick={() => setStatus("COMPLETED")}
             >
               Completed
@@ -192,21 +192,23 @@ export default function DoctorDashboard() {
               <tbody>
                 {appointments.map((item: Appointment) => (
                   <tr key={item.id} className="border-b border-gray-300">
-                    <td className="w-1/4 p-3 align-middle text-left">
-                      <p className="text-lg font-bold">{item.patient.name}</p>
+                    <td className="w-1/4 sm:p-3 align-middle text-left">
+                      <p className="text-xs sm:text-lg font-bold">
+                        {item.patient.name}
+                      </p>
                     </td>
-                    <td className="w-1/4 p-3 align-middle text-center">
-                      <p className="text-md">{item.date}</p>
+                    <td className="w-1/4 sm:p-3 align-middle text-center">
+                      <p className="text-xs sm:text-md">{item.date}</p>
                     </td>
-                    <td className="w-1/4 p-3 align-middle text-center">
-                      <p className="text-md">{item.status}</p>
+                    <td className="w-1/4 sm:p-3 align-middle text-center">
+                      <p className="text-xs sm:text-md">{item.status}</p>
                     </td>
-                    <td className="w-1/4 p-3 align-middle text-right">
-                      <div className="flex gap-2 justify-end">
+                    <td className="w-1/4 sm:p-3 align-middle text-right">
+                      <div className="flex gap-2 justify-end flex-col sm:flex-row">
                         {/* Only allow status change if appointment is pending */}
                         <button
                           disabled={item.status !== "PENDING"}
-                          className={`px-4 py-2 rounded ${
+                          className={`sm:px-4 sm:py-2 rounded text-xs sm:text-md ${
                             item.status === "PENDING"
                               ? "bg-red-500 text-white hover:bg-red-400 cursor-pointer"
                               : "bg-red-200 text-white cursor-not-allowed"
@@ -221,7 +223,7 @@ export default function DoctorDashboard() {
                         </button>
                         <button
                           disabled={item.status !== "PENDING"}
-                          className={`px-4 py-2 rounded ${
+                          className={`sm:px-4 sm:py-2 rounded text-xs sm:text-md ${
                             item.status === "PENDING"
                               ? "bg-green-500 text-white hover:bg-green-400 cursor-pointer"
                               : "bg-green-200 text-white cursor-not-allowed"

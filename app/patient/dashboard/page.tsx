@@ -139,7 +139,7 @@ export default function PatientDashboard() {
         {/* Filter sidebar */}
         <div className="flex-1 flex flex-col bg-gray-100 rounded-2xl border border-gray-300 p-5 gap-5 sticky top-20">
           <div className="flex flex-row gap-2 items-center">
-            <h1 className="text-lg font-bold text-gray-700 cursor-default">
+            <h1 className="text-md sm:text-lg font-bold text-gray-700 cursor-default">
               Filter
             </h1>
             <FaFilter className="text-sm sm:text-md" />
@@ -196,7 +196,7 @@ export default function PatientDashboard() {
             {doctors.map((doctor: Doctor) => (
               <div
                 key={doctor.id}
-                className="flex flex-col w-60 h-80 bg-gray-100 rounded-xl border border-gray-300 p-2 shadow-md gap-2 overflow-hidden"
+                className="flex flex-col w-43 h-70 sm:w-60 sm:h-80 bg-gray-100 rounded-xl border border-gray-300 p-2 shadow-md gap-2 overflow-hidden"
               >
                 <img
                   src={doctor.photo_url || "/doctor_default.jpg"}
@@ -212,7 +212,7 @@ export default function PatientDashboard() {
                   </p>
                 </div>
                 <button
-                  className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600 cursor-pointer flex-shrink-0"
+                  className="bg-gray-700 text-white text-sm sm:text-md px-4 py-2 rounded-lg hover:bg-gray-600 cursor-pointer flex-shrink-0"
                   onClick={() => {
                     setModal(true);
                     setDoctorId(doctor.id);

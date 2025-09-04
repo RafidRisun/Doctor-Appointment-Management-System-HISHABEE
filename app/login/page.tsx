@@ -76,13 +76,19 @@ export default function Login() {
       </div>
       {/* Login form section */}
       <div className="w-full sm:basis-1/2 min-h-screen flex flex-col justify-center items-center p-20 sm:p-50 gap-8">
-        <h1 className="text-3xl font-bold">Login to your Account</h1>
+        {role === "DOCTOR" && (
+          <h1 className="text-3xl font-bold">Login to your Doctor Account</h1>
+        )}
+        {role === "PATIENT" && (
+          <h1 className="text-3xl font-bold">Login to your Patient Account</h1>
+        )}
+        {!role && <h1 className="text-3xl font-bold">Login to your Account</h1>}
         {/* Role selection */}
         <div className="flex items-center w-full justify-between gap-2">
           <button
             className={`w-full ${
               role === "DOCTOR" ? "bg-gray-500" : "bg-gray-700"
-            } text-white px-4 py-2 rounded-lg hover:bg-gray-600 cursor-pointer`}
+            } text-white px-4 py-2 rounded-lg hover:bg-gray-500 cursor-pointer`}
             onClick={() => setRole("DOCTOR")}
           >
             Doctor
@@ -90,7 +96,7 @@ export default function Login() {
           <button
             className={`w-full ${
               role === "PATIENT" ? "bg-gray-500" : "bg-gray-700"
-            } text-white px-4 py-2 rounded-lg hover:bg-gray-600 cursor-pointer`}
+            } text-white px-4 py-2 rounded-lg hover:bg-gray-500 cursor-pointer`}
             onClick={() => setRole("PATIENT")}
           >
             Patient
